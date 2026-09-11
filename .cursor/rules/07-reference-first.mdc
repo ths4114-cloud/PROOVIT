@@ -1,0 +1,16 @@
+---
+description: "새 기능 영역의 레퍼런스 조사와 PROOVIT에 맞는 최소 설계"
+alwaysApply: true
+---
+
+# Reference → Pattern → Why → PROOVIT Context → Recommendation
+- 먼저 저장소의 유사 구현·승인된 결정·현재 사용 버전을 확인한다.
+- 조사 깊이는 위험에 맞춘다. Level 0: 작은 UI/단순 수정은 별도 조사 생략. Level 1: 일반 UI/개발 패턴 간단 확인.
+- Level 2: Dashboard/Admin/Notification/Search/Onboarding은 일반 UX·데이터·권한·실패 패턴을 검토한다.
+- Level 3: Authentication/Authorization/Payment/Reward/Privacy/Data Deletion/Security/Moderation은 공식 문서와 보안 지침, 실패 사례를 충분히 확인한 후 설계한다.
+- 조사 수준은 결정 권한 수준과 별개다. 조사 Level 3이라고 모든 구현에 새 PO 승인이 필요한 것은 아니다.
+- 자료의 URL·제목·확인일·해당 버전·채택할 점·배제할 점을 Issue 또는 결정 기록에 남긴다. 공식 문서와 유지보수되는 원자료를 우선한다.
+- 접속하지 못한 자료나 불확실한 주장을 확인했다고 쓰지 않는다. 고위험 설계에 필요한 근거가 없으면 조사 미완료로 표시한다.
+- 업계 패턴의 이유·장단점과 PROOVIT의 규모·위험·단계를 비교하고 최소 적정안을 추천한다. 경쟁 제품이나 라이브러리를 그대로 복제하지 않는다.
+- PO가 놓치기 쉬운 선택·위험은 구현 전에 쉬운 말로 설명한다.
+- 예: 알림 기능은 화면 모양뿐 아니라 수신 권한·중복 발송·실패 재시도·수신 거부 필요성을 확인한다.
