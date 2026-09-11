@@ -7,9 +7,10 @@ PROOVIT은 사용자의 목표를 검증 가능한 미션으로 전환하고, �
 ## 현재 단계
 
 - 저장소 및 4인 협업 환경 구성
-- PRD 검토
+- 정식 출시 기준 PRD 초안 작성
 - Sprint 0 제품 정책 결정 준비
-- 유저플로우 및 로우파이 와이어프레임 설계 예정
+- 유저플로우 초안 작성
+- 로우파이 와이어프레임 설계 예정
 
 ## 협업 방식
 
@@ -21,6 +22,11 @@ PROOVIT은 사용자의 목표를 검증 가능한 미션으로 전환하고, �
 ## 문서
 
 - AI 코딩 및 협업 지침: `AGENTS.md`
+- 제품 요구사항: `docs/product/PRD.md`
+- 사용자 흐름: `docs/product/USER_FLOWS.md`
+- 공식 용어: `docs/product/GLOSSARY.md`
+- Sprint 0 계획: `docs/sprint-0/SPRINT_0_PLAN.md`
+- Sprint 0 결정 목록: `docs/sprint-0/DECISION_REGISTER.md`
 - 구현 시작 조건: `docs/DEFINITION_OF_READY.md`
 - 구현 완료 조건: `docs/DEFINITION_OF_DONE.md`
 - 코드 리뷰 기준: `docs/CODE_REVIEW_CHECKLIST.md`
