@@ -1,8 +1,8 @@
 # PROOVIT Sprint 0 Plan
 
-- 문서 상태: Draft
+- 문서 상태: P0 정책 승인 반영, 설계 산출물 진행 필요
 - 최종 수정일: 2026-09-12
-- 권장 Timebox: 집중 작업일 5일, 핵심 결정 미승인 시 연장
+- 권장 Timebox: 집중 작업일 5일, 조건부 결정 검증과 설계 미완료 시 연장
 - 목표: 첫 Vertical Slice가 추측 없이 [Definition of Ready](../DEFINITION_OF_READY.md)를 통과하게 한다
 - 관련 문서: [PRD](../product/PRD.md), [사용자 흐름](../product/USER_FLOWS.md), [결정 목록](DECISION_REGISTER.md)
 
@@ -83,11 +83,11 @@ Sprint 0는 코드를 많이 만드는 기간이 아니다. 제품 정책, 사�
 ### Day 2 User Flow and Wireframe
 
 - Participant Golden Path 와이어프레임
-- Proof 오류·반려·재제출 흐름
+- Camera 권한·촬영·업로드·자동 인정·재시도 흐름
 - Ranking 동점·Rival 없음 상태
 - Final Submission과 Reward Eligibility 상태
-- Operator 검수와 정정 흐름
-- 모바일·키보드·카메라 대체 경로 검토
+- Operator 신고·오류 정정 흐름
+- 모바일 Camera 권한 거부·미지원 경로 검토
 
 종료 조건:
 
@@ -96,8 +96,8 @@ Sprint 0는 코드를 많이 만드는 기간이 아니다. 제품 정책, 사�
 
 ### Day 3 Architecture and Data Decisions
 
-- PWA와 Native App 비교
-- Backend, Auth, DB, Storage와 Hosting 대안 비교
+- 승인된 PWA·Vercel·Supabase 방향의 조건 검증
+- Auth, DB, Private Storage와 Hosting의 권한·비용·복구 설계
 - Participant와 Operator 권한 모델
 - Challenge, Mission, Participation, Project, Proof, Score Event 관계
 - 정책 버전, idempotency와 상태 전이
@@ -152,10 +152,10 @@ Sprint 0는 코드를 많이 만드는 기간이 아니다. 제품 정책, 사�
 ### UX
 
 - S0-101 Participant Golden Path 와이어프레임
-- S0-102 Proof 실패와 복구 상태 와이어프레임
+- S0-102 Camera Proof 실패와 복구 상태 와이어프레임
 - S0-103 Ranking·Final Submission·Eligibility 와이어프레임
-- S0-104 Operator Console 와이어프레임
-- S0-105 접근성 및 카메라 대체 흐름 검토
+- S0-104 Operator 신고·정정 Console 와이어프레임
+- S0-105 접근성과 Camera 권한·미지원 흐름 검토
 
 ### Architecture and Data
 
@@ -187,7 +187,7 @@ Sprint 0는 코드를 많이 만드는 기간이 아니다. 제품 정책, 사�
 각 Issue는 하나의 검토 가능한 결과를 가진다. 문서 전체를 한 Issue로 묶지 않는다.
 
 - `docs: approve launch scope and reward boundary`
-- `docs: define proof lifecycle and verification policy`
+- `docs: define camera proof auto-accept lifecycle`
 - `docs: define score deadline and ranking policy`
 - `design: create participant golden path wireframes`
 - `design: create operator proof review wireframes`
@@ -200,16 +200,16 @@ Sprint 0는 코드를 많이 만드는 기간이 아니다. 제품 정책, 사�
 
 ### 사용자 행동
 
-로그인한 Participant가 Project를 설정하고 하나의 Mission에 이미지 Proof를 제출한다. Operator가 승인하면 Score Event가 정확히 한 번 생성되고 Participant가 확정 Score를 확인한다.
+로그인한 Participant가 Project를 설정하고 하나의 Mission에서 앱 내 Camera Proof를 촬영·제출한다. 기술 검증과 저장에 성공하면 자동으로 `accepted`가 되고 Score Event가 정확히 한 번 생성되어 Participant가 확정 Score를 확인한다.
 
 ### 포함
 
 - 최소 인증 경로
-- Participant와 Operator 권한
+- Participant 권한과 Operator 예외 정정 권한의 기반
 - Project 저장
 - Mission 조회
-- Proof 업로드와 pending_review
-- Operator 승인·반려
+- 앱 내 Camera Capture와 Proof 업로드
+- 기술 검증, 자동 `accepted`와 실패 재시도
 - Score Event와 사용자 Score 표시
 - 정상·오류·중복·권한 테스트
 
@@ -227,12 +227,12 @@ Sprint 0는 코드를 많이 만드는 기간이 아니다. 제품 정책, 사�
 - Participant는 자신의 Project와 Proof만 조회한다.
 - 허용되지 않은 파일과 크기를 서버가 거부한다.
 - 업로드 또는 DB 실패 후 잘못된 승인 상태가 남지 않는다.
-- Operator가 아닌 사용자는 Proof를 승인할 수 없다.
-- 같은 승인 요청을 반복하거나 동시에 실행해도 Score Event가 하나만 생긴다.
-- 반려된 Proof는 Score를 만들지 않으며 사용자가 사유를 확인한다.
+- 사진첩, Screenshot과 일반 파일 업로드 진입점은 제공하지 않는다.
+- 같은 제출 요청을 반복하거나 동시에 실행해도 Proof와 Score Event가 하나만 생긴다.
+- 기술 검증 또는 저장에 실패한 Proof는 Score를 만들지 않으며 사용자가 앱 내 Camera로 다시 촬영할 수 있다.
 - Score는 서버의 정책과 제출 시각으로 계산한다.
 
-정확한 AC는 D-002부터 D-006, D-011부터 D-014 승인 후 확정한다.
+정확한 AC는 승인된 D-002부터 D-006, D-011부터 D-014를 Architecture, API, Security와 Test Strategy 계약으로 구체화한 뒤 확정한다.
 
 ## 8. Sprint 0 Exit Criteria
 
@@ -273,8 +273,8 @@ Sprint 0는 코드를 많이 만드는 기간이 아니다. 제품 정책, 사�
 - PRD 0.2: Draft 작성
 - User Flow: Draft 작성
 - Glossary: Draft 작성
-- Decision Register: Proposed 추천 작성
-- PO 승인: 미실행
+- Decision Register: D-001부터 D-020 Accepted, 일부 출시 전 검증 조건 유지
+- PO 승인: 2026-09-12 기록 완료
 - Wireframe: 미작성
 - Architecture, Database, API: 미작성
 - Security, Test Strategy: 미작성
@@ -282,4 +282,4 @@ Sprint 0는 코드를 많이 만드는 기간이 아니다. 제품 정책, 사�
 - 사람 Reviewer: 미지정
 - CI: 미설정
 
-따라서 현재 단계는 `Sprint 0 기반 문서 작성 중`이며 구현 시작 상태가 아니다.
+따라서 제품 정책 결정은 완료됐지만 현재 단계는 `Sprint 0 설계 산출물 작성 중`이다. Wireframe, Architecture, Database, API, Security, Test Strategy와 Vertical Slice Issue가 없어 구현 시작 상태가 아니다.

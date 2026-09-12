@@ -1,10 +1,10 @@
 # PROOVIT Launch MVP User Flows
 
-- 문서 상태: Draft
+- 문서 상태: P0 정책 승인 반영, Wireframe 검토 전
 - 최종 수정일: 2026-09-12
 - 관련 문서: [PRD](PRD.md), [용어집](GLOSSARY.md), [결정 목록](../sprint-0/DECISION_REGISTER.md)
 
-이 문서는 화면 디자인보다 먼저 사용자 행동, 시스템 판정, 오류와 복구 상태를 정의한다. 정책이 미승인인 분기는 `결정 필요`로 표시한다.
+이 문서는 화면 디자인보다 먼저 사용자 행동, 시스템 판정, 오류와 복구 상태를 정의한다. P0는 앱 내 카메라 촬영을 기술 검증 후 자동 인정하며, 정식 서비스 AI Monitoring은 후속 Gate로 분리한다.
 
 ## 1. 전체 흐름
 
@@ -21,11 +21,11 @@ flowchart TD
     H --> I[Mission Board]
     I --> J[오늘의 Mission]
     J --> K[외부에서 Execution]
-    K --> L[Proof 촬영 또는 업로드]
-    L --> M[처리 및 검수 대기]
-    M --> N{검수 결과}
-    N -- 승인 --> O[Score 확정]
-    N -- 반려 --> P[사유 확인과 재제출]
+    K --> L[앱 내 Camera Proof 촬영]
+    L --> M[업로드와 기술 검증]
+    M --> N{저장 결과}
+    N -- 성공 --> O[자동 accepted와 Score 확정]
+    N -- 실패 --> P[오류 확인과 다시 촬영]
     P --> L
     O --> Q[Ranking과 다음 Mission]
     Q --> I
@@ -60,11 +60,12 @@ flowchart TD
 - 네트워크 실패: 사용자가 입력과 동의 상태를 확인한 뒤 다시 시도할 수 있다.
 - 계정 제한: 내부 보안 정보를 노출하지 않고 지원 경로를 안내한다.
 
-### 결정 필요
+### 승인된 정책
 
-- 시작일 이후 참가 허용 여부
+- Challenge 시작 후 신규 참가 불가
+- 미수행 자동 탈락 없음, 명시적 철회만 기록
 - 필수 동의 항목과 연령 또는 지역 제한
-- 닉네임과 프로필 공개 범위
+- Leaderboard에는 같은 코호트의 닉네임, 기본 아이콘, Score와 Rank만 공개
 
 ## 3. Flow B Project 설정
 
@@ -83,11 +84,12 @@ flowchart TD
 - 새로고침 또는 이탈: 저장되지 않은 변경이 있다면 경고한다.
 - 중복 저장: 하나의 활성 Project만 유지한다.
 
-### 결정 필요
+### 승인된 정책과 설계 필요
 
 - 필수 필드와 글자 수
-- Project 수정 가능 기간과 횟수
-- Pivot이 과거 Mission Context와 Final Submission에 미치는 영향
+- Project Pivot은 Day 10 종료 전 1회 허용
+- 과거 Project 이력과 Score는 유지하고 Final Submission은 최신 Project 기준
+- 필수 필드와 글자 수는 Wireframe과 API 계약에서 확정
 
 ## 4. Flow C Mission Board와 Daily Mission
 
@@ -95,7 +97,7 @@ flowchart TD
 
 1. 시스템은 Participant의 Challenge와 Project를 확인한다.
 2. Board는 Day 1부터 Day 31, Phase와 각 Mission 상태를 표시한다.
-3. 사용자는 현재 수행 가능한 Mission을 선택한다.
+3. 사용자는 오늘 또는 이미 해금된 Mission을 선택한다.
 4. Mission Detail은 목적, 가이드, 완료 기준, Proof 예시, 허용 형식, 기한과 획득 가능 Score를 표시한다.
 5. 사용자는 앱 밖에서 Execution을 수행한다.
 
@@ -103,9 +105,9 @@ flowchart TD
 
 - locked: 아직 수행할 수 없음
 - available: 현재 제출 가능
-- pending_review: Proof 검수 대기
-- approved: Proof 승인과 Score 확정
-- rejected: 반려 사유 확인 및 재제출 가능
+- processing: Camera Proof 업로드와 기술 검증 중
+- accepted: P0 촬영·제출 정책 충족과 Score 확정
+- failed: 권한, 네트워크, 파일 검증 또는 저장 실패로 다시 촬영 가능
 - missed: 미제출 또는 정책상 제출 종료
 - completed_without_score: 운영 정정 등 예외 상태가 필요할 때만 사용하며 별도 승인 필요
 
@@ -115,42 +117,43 @@ flowchart TD
 - 기기 시간이 서버와 다름: 서버의 Challenge 시간과 기한을 기준으로 표시한다.
 - 잠긴 Mission URL 직접 접근: 서버가 제출 권한을 거부하고 허용 화면으로 안내한다.
 - Mission 콘텐츠 변경: 진행 중 사용자에게 적용되는 콘텐츠 버전을 유지한다.
+- 해금된 과거 Mission: 다시 잠그지 않고 `proofCloseAt`까지 제출 가능하게 유지한다.
 
 ## 5. Flow D Proof 제출
 
 ### 정상 흐름
 
 1. 사용자는 Mission Detail에서 Proof 제출을 시작한다.
-2. 시스템은 허용된 촬영 또는 파일 선택 방법을 표시한다.
-3. 사용자는 이미지를 촬영하거나 선택한다.
-4. 클라이언트는 미리보기, 삭제와 다시 선택을 제공한다.
+2. 시스템은 Camera 권한을 요청하고 앱 내 촬영 화면을 표시한다.
+3. 사용자는 앱 내 Camera 화면에서 새 이미지를 촬영한다.
+4. 클라이언트는 미리보기, 삭제와 재촬영을 제공한다.
 5. 서버는 인증, Mission 제출 가능 여부와 파일 제한을 확인한다.
 6. 파일 저장에 성공하면 Proof 메타데이터를 기록한다.
-7. 시스템은 제출 시각과 `pending_review` 상태를 반환한다.
-8. 사용자는 검수 대기 상태와 예상 Score가 있는 경우 확정 전 값임을 확인한다.
+7. 서버가 기술 검증과 저장을 완료하면 Proof를 `accepted`로 전이하고 Score Event를 한 번 생성한다.
+8. 사용자는 확정 Score와 누적 Score를 즉시 확인하고 Rank가 다음 자정 Snapshot에 갱신됨을 확인한다.
 
 ### Proof 상태
 
 ```mermaid
 stateDiagram-v2
     [*] --> draft
-    draft --> uploading: 제출
-    uploading --> processing: 파일 저장 성공
+    draft --> camera_open: 촬영 시작
+    camera_open --> captured: 앱 내 촬영
+    camera_open --> permission_denied: 권한 거부
+    permission_denied --> camera_open: 권한 복구 후 재시도
+    captured --> uploading: 제출
+    uploading --> processing: 파일 저장 시작
     uploading --> failed: 네트워크 또는 저장 실패
-    failed --> uploading: 안전한 재시도
-    processing --> pending_review: 파일 검증 성공
-    processing --> rejected: 파일 검증 실패
-    pending_review --> approved: Operator 승인
-    pending_review --> rejected: Operator 반려
-    rejected --> resubmitted: 재제출 허용
-    resubmitted --> uploading
-    approved --> corrected: 승인 정정
-    corrected --> pending_review
+    processing --> accepted: 기술 검증과 저장 성공
+    processing --> failed: 파일 검증 또는 DB 저장 실패
+    failed --> camera_open: 새로 촬영
+    accepted --> corrected: 신고 또는 운영 오류 정정
 ```
 
 ### 예외와 복구
 
-- 카메라 권한 거부: 정책상 허용된 대체 입력 또는 권한 설정 안내를 제공한다.
+- 카메라 권한 거부 또는 미지원: 사진첩·파일 업로드로 우회하지 않고 권한 설정과 지원 기기를 안내한다.
+- Screenshot·사진첩·파일 선택: P0 UI와 API 계약에서 허용하지 않는다.
 - 지원하지 않는 파일: 허용 형식과 크기를 알려주고 업로드하지 않는다.
 - 파일 저장 성공 후 DB 저장 실패: 파일을 정리하거나 재처리 가능한 상태로 기록한다.
 - 재시도 응답 유실: idempotency key로 동일 Proof를 반환한다.
@@ -158,42 +161,45 @@ stateDiagram-v2
 - 기한 경계 제출: 서버가 기록한 수신 시각과 정책으로 판정한다.
 - 악성 또는 처리 불가 파일: 공개하지 않고 안전하게 격리 또는 삭제한다.
 
-## 6. Flow E Proof 검수
+## 6. Flow E Proof 자동 인정과 운영 정정
 
-### Operator 정상 흐름
+### P0 정상 흐름
 
-1. Operator는 `pending_review` 목록을 연다.
-2. 시스템은 Proof, Mission 완료 기준, 제출 시각과 과거 검수 이력을 표시한다.
-3. Operator는 승인 또는 반려를 선택한다.
-4. 반려에는 사용자에게 보여줄 사유를 입력한다.
-5. 서버는 현재 상태와 Operator 권한을 다시 확인한다.
-6. 승인 시 Proof 상태와 Score Event를 원자적으로 확정한다.
-7. 시스템은 Participant에게 최신 상태를 표시한다.
+1. 서버는 Camera Proof의 인증·소유권·Mission 상태·서버 수신 시각·실제 이미지 형식·크기를 확인한다.
+2. 서버는 파일과 Proof 메타데이터 저장 성공을 확인한다.
+3. 시스템은 `verificationMode=capture_auto_accept`와 정책 버전을 기록한다.
+4. Proof를 `accepted`로 전이하고 Score Event를 정확히 한 번 생성한다.
+5. Participant에게 Proof, Score와 다음 Rank 갱신시각을 표시한다.
+
+### 정식 서비스 후속 흐름
+
+정식 서비스에서는 별도 승인 후 `verificationMode=ai_review`를 사용한다. AI 승인 전에는 Score를 만들지 않으며 오탐·미탐, 이의제기와 사람 대체 절차를 함께 구현한다.
 
 ### 예외와 복구
 
-- 두 Operator가 동시에 처리: 먼저 확정된 상태만 유효하며 다른 요청은 최신 상태를 반환한다.
-- 승인 후 처리 응답 유실: 재시도해도 Score Event를 중복 생성하지 않는다.
-- 잘못된 승인: 이력을 삭제하지 않고 정정과 보정 Score Event를 생성한다.
-- 파일 접근 실패: 검수하지 않고 운영 오류로 기록한다.
+- 처리 응답 유실: 재시도해도 Proof와 Score Event를 중복 생성하지 않는다.
+- 파일 저장 성공 후 DB 실패: 고립 파일을 정리하거나 재처리한다.
+- 신고 또는 잘못된 자동 인정: 이력을 삭제하지 않고 Operator 정정과 보정 Score Event를 생성한다.
+- 파일 접근 실패: 자동 인정하지 않고 운영 오류로 기록한다.
 - 권한 없음: 목록, 파일과 처리 API 모두 접근을 거부한다.
 
 ## 7. Flow F Score와 Ranking
 
 ### 정상 흐름
 
-1. Proof 승인 사건이 Score 계산을 요청한다.
+1. Proof `accepted` 사건이 Score 계산을 요청한다.
 2. 서버는 Mission 정책 버전, baseScore, Deadline과 최초 유효 제출 시각을 읽는다.
 3. 서버는 승인된 multiplier로 finalScore를 계산한다.
 4. 서버는 중복 불가능한 Score Event를 저장한다.
-5. Ranking은 확정 Score 집계로 갱신된다.
-6. 사용자는 Score 결과, 누적 Score와 Rank Change를 확인한다.
+5. 사용자는 Score 결과와 누적 Score를 즉시 확인한다.
+6. 매일 00:00 KST를 기준으로 전날 Score를 마감하고 00:05에 Ranking Snapshot을 생성한다.
+7. 사용자는 Snapshot의 Rank Change와 마지막 갱신시각을 확인한다.
 
 ### 예외와 복구
 
-- Score 저장 실패: Proof 승인과의 원자성 또는 재처리 전략으로 불일치를 복구한다.
-- Ranking 갱신 지연: Score 확정과 Ranking 반영 상태를 구분한다.
-- 동점: 승인된 tie-breaker 규칙을 적용한다.
+- Score 저장 실패: Proof 자동 인정과의 원자성 또는 재처리 전략으로 불일치를 복구한다.
+- Ranking 갱신 지연: 이전 Snapshot을 유지하고 마지막 갱신시각과 지연 상태를 표시한 뒤 중복 없이 재실행한다.
+- 동점: Score, 정시 제출 Mission 수, 마지막 점수 기여 Proof 제출시각 순으로 비교하고 그래도 같으면 공동 순위를 부여한다.
 - 참가자 한 명: Rival 영역을 숨기고 빈 공간을 잘못된 사용자로 채우지 않는다.
 - Score 정정: 원본 Event를 수정하지 않고 보정 Event를 추가한다.
 
@@ -202,7 +208,7 @@ stateDiagram-v2
 ### 정상 흐름
 
 1. 시스템은 Final Submission 가능 기간을 표시한다.
-2. 사용자는 Public URL, One-line Description, Target Customer와 Launch Screenshot을 입력한다.
+2. 사용자는 Public URL, One-line Description, Target Customer와 Launch Preview Image를 입력한다. 이 이미지는 Mission의 Camera Proof가 아닌 Final Submission 소개 자산이며 입력 방식과 공개 범위는 후속 계약에서 정한다.
 3. 서버는 입력 형식과 제출 권한을 확인한다.
 4. 시스템은 제출 결과와 수정 가능 여부를 보여준다.
 5. 서버는 승인된 Score Rate와 Final Submission 상태로 Reward Eligibility를 계산한다.
@@ -214,7 +220,7 @@ stateDiagram-v2
 - 내부망 또는 위험한 URL: 서버가 무분별하게 접속하지 않으며 승인된 검증만 수행한다.
 - 제출 마감 경계: 서버 수신 시각을 기준으로 처리한다.
 - 저장 실패: 작성 내용을 보존하고 재시도한다.
-- Score 검수 미완료: 자격 결과를 확정하지 않고 판정 대기 사유를 표시한다.
+- Proof 처리 또는 Score 생성 미완료: 자격 결과를 확정하지 않고 처리 상태를 표시한다.
 - 제출 정정: 이력과 자격 재계산 근거를 남긴다.
 
 ## 9. Flow H 계정 및 데이터 삭제
@@ -242,15 +248,15 @@ stateDiagram-v2
 3. Project Setup (초기, 유효성 오류, 저장 실패)
 4. Mission Board (로딩, 정상, 빈 상태, 오류)
 5. Daily Mission (잠금, 제출 가능, 마감)
-6. Proof Capture and Upload (권한 거부, 처리 중, 실패)
-7. Proof Status (검수 대기, 승인, 반려, 재제출)
+6. Camera Proof Capture (권한 거부, 미지원, 촬영, 미리보기)
+7. Proof Status (처리 중, 자동 인정, 실패, 다시 촬영)
 8. Score Result (확정, 정정, Ranking 반영 대기)
 9. Ranking (정상, 동점, Rival 없음)
 10. Final Submission (입력 오류, 저장 실패, 완료)
 11. Reward Eligibility (충족, 미충족, 판정 대기)
 12. Account and Data Request
-13. Operator Proof Queue
-14. Operator Proof Review and Correction
+13. Operator Incident and Correction
+14. Future AI Review (P0 외 후속 참고)
 
 ## 11. Vertical Slice 후보
 
@@ -260,8 +266,8 @@ stateDiagram-v2
 로그인한 Participant
 → Project 설정
 → 하나의 Daily Mission 확인
-→ 하나의 이미지 Proof 제출
-→ Operator 승인
+→ 앱 내 Camera Proof 촬영·제출
+→ 기술 검증 후 자동 accepted
 → Score Event 한 번 생성
 → Participant가 확정 Score 확인
 ```
