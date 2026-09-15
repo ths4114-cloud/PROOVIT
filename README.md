@@ -33,3 +33,6 @@ PROOVIT은 사용자의 목표를 일일 Mission으로 전환하고, 앱 내 Cam
 - 구현 완료 조건: `docs/DEFINITION_OF_DONE.md`
 - 코드 리뷰 기준: `docs/CODE_REVIEW_CHECKLIST.md`
 - 엔지니어링 가이드: `docs/ENGINEERING_GUIDE.md`
+- 공통 기반 개발 안내: `docs/DEVELOPMENT.md`
+- 공통 기반 체크리스트: `docs/implementation/FOUNDATION_CHECKLIST.md`
+- 화면 계약 초안: `docs/implementation/API_CONTRACT.md`
