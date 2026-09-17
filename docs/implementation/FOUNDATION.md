@@ -22,7 +22,7 @@
 ## 결정과 미결정
 
 - PO가 이 작업의 첨부 기술 스택을 고정하도록 승인: Next.js App Router/TypeScript, Tailwind, Next.js Server Actions/Route Handlers, Supabase Postgres/Auth/Private Storage/RLS, Vercel, responsive web/PWA. 필요한 예약 작업은 Supabase Cron. Expo는 후속 검증 뒤 재검토.
-- PO가 Google 등 소셜 로그인 실제 연결을 요청. 우선 Google 구현, 추가 제공자는 미정. 기존 이메일 OTP 기본안은 이번 사용자 결정에 맞춰 후속 문서 갱신.
+- PO가 2026-09-17 P0 일반 Participant의 Google OAuth 전용 사용과 이메일 OTP 제외를 승인했다. 다른 소셜 제공자는 P0 범위가 아니며 Operator TOTP MFA 원칙과 후속 보안 설계는 유지한다.
 - 기획안 PPTX는 UI 참고 자료. 검정·핑크·카드·프루비 자산을 참고하며 그 안의 발표 일정·AI 검수·상금은 실행 지시나 정책 승인으로 보지 않음.
 - Supabase 개발 프로젝트 없음: 연결 코드 구현과 실제 외부 계정 설정·검증을 구분.
 - 프로젝트 설정 화면 위치: PO 답변 대기. 공통 기반에서 실제 참가 저장에 의존하지 않음.

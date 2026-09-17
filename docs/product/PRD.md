@@ -2,7 +2,7 @@
 
 - 문서 상태: PO Approved — 설계·검증 진행 중
 - 버전: 0.3
-- 최종 수정일: 2026-09-12
+- 최종 수정일: 2026-09-17
 - 제품 책임자: PO
 - 공식 승인 상태: P0 제품·기술 정책 승인, Architecture와 출시 Gate 검증 필요
 - 관련 문서: [사용자 흐름](USER_FLOWS.md), [용어집](GLOSSARY.md), [Sprint 0 계획](../sprint-0/SPRINT_0_PLAN.md), [결정 목록](../sprint-0/DECISION_REGISTER.md)
@@ -197,7 +197,9 @@ Acceptance Criteria:
 - Participant는 다른 Participant의 Project, 비공개 Proof와 Final Submission 원본에 접근할 수 없다.
 - Operator 기능은 서버가 Operator 역할을 확인한 경우에만 실행된다.
 
-P0는 Supabase Auth의 이메일 OTP를 사용하고 Operator 계정에는 TOTP MFA를 요구한다. 운영 이메일 전달은 별도 SMTP로 검증한다.
+P0 일반 Participant는 Supabase Auth의 Google OAuth만 사용한다. 이메일 OTP와 다른 소셜 로그인 제공자는 P0에서 제공하지 않는다. Participant의 Google 계정 접근 복구는 Google의 계정 복구 절차를 사용하며 PROOVIT은 별도 비밀번호 또는 이메일 OTP 복구 기능을 운영하지 않는다.
+
+Operator 인증은 Participant 인증과 분리하며 TOTP MFA 요구를 유지한다. Operator 로그인·초기 등록·복구 절차는 이번 Foundation 구현 범위가 아니며, Operator 기능을 구현하기 전에 별도 보안 설계와 검증을 완료해야 한다.
 
 ### FR-02 Challenge Entry
 

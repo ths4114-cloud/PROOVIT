@@ -21,7 +21,7 @@
 ## 커밋 전 확인할 결정
 
 - [확정] 기술 스택: Next.js App Router/TypeScript, Tailwind, Next.js Server Actions/Route Handlers, Supabase Postgres/Auth/Private Storage/RLS, Vercel, Responsive Web/PWA.
-- [확정] 첫 로그인: Google OAuth. 기존 이메일 OTP 기본안보다 이번 PO 요청을 우선한다. 다른 제공자·Operator MFA 변경은 별도 결정.
+- [확정] P0 일반 Participant 로그인: Google OAuth만 사용하고 이메일 OTP·다른 소셜 제공자는 제외. Participant 계정 복구는 Google 절차 사용. Operator TOTP MFA 원칙은 유지하며 구현·복구 설계는 후속 범위.
 - [확정] UI 방향: 제공된 `proovit_기획안_f.pptx`의 모바일 화면을 참고한 검정·핑크·둥근 카드·캐릭터 스타일.
 - [확정] 미리보기: 저장하지 않는 `/preview`에서만 fixture를 사용하고 기본 환경에서는 404.
 - [미정] 실제 Supabase 프로젝트 생성·Google Cloud OAuth client·Supabase Provider 설정·redirect allow-list.

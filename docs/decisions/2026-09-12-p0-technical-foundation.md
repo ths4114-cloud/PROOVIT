@@ -11,7 +11,7 @@
 
 ## 1. Decision — 무엇을 결정하는가
 
-P0는 Next.js TypeScript PWA, Vercel, Supabase Postgres/Auth/Private Storage를 기술 방향으로 사용한다. Participant와 Operator를 분리하고 모든 보호 작업에서 서버 권한 검사와 Postgres RLS를 함께 적용한다. Supabase 이메일 OTP를 기본 인증으로, Operator TOTP MFA를 추가 인증으로 사용한다.
+P0는 Next.js TypeScript PWA, Vercel, Supabase Postgres/Auth/Private Storage를 기술 방향으로 사용한다. Participant와 Operator를 분리하고 모든 보호 작업에서 서버 권한 검사와 Postgres RLS를 함께 적용한다. 이 문서가 정했던 Participant 이메일 OTP 기본안은 [2026-09-17 Participant 인증 개정](2026-09-17-p0-participant-authentication.md)으로 대체되었다. Operator TOTP MFA 원칙은 유지한다.
 
 최대 456명을 가정한다. Participant는 iOS Safari와 Android Chrome 최신 2개 주요 버전, Operator는 Desktop Chrome과 Edge 최신 2개 주요 버전을 지원한다. Proof 원본은 비공개로 보관하고 `proofCloseAt` 30일 후 자동 삭제한다.
 
@@ -58,7 +58,7 @@ P0는 Option A를 채택한다. 현재 규모에서 분산 시스템이나 Nativ
 ## 6. Decision & Consequences — 실제 결정
 
 - 선택한 안: Option A
-- 승인 조건: 요금·지역·약관, SMTP, RLS, Private Storage, 백업·복구와 실제 기기 Camera 검증
+- 승인 조건: 요금·지역·약관, Google OAuth 공급자 설정, RLS, Private Storage, 백업·복구와 실제 기기 Camera 검증
 - 선행 작업: Architecture, Database, API, Security, Test Strategy와 환경별 배포 설계
 - 검증: 권한 통합 테스트, Camera E2E, 456명 부하 시나리오, Proof 부분 실패와 삭제 재처리, Ranking 배치 재실행, 복원 시험
 - 목표: 핵심 API p95 1초, LCP p75 2.5초, DB RPO 24시간·RTO 4시간 최소선

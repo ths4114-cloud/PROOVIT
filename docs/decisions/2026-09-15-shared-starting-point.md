@@ -1,6 +1,6 @@
 # ED-2026-09-15 — 두 개발자의 공통 시작점
 
-- 상태: 기술 스택과 Google 로그인 구현 승인, 외부 프로젝트 생성 승인 대기
+- 상태: 기술 스택과 Google 로그인 구현 승인, Participant 인증 정책은 2026-09-17 확정
 - 결정자: PO / 날짜: 2026-09-15
 - 근거: 현재 작업의 사용자 요청 “기술스택은 이걸로 고정… 코딩과 깃 커밋”, “구글 등으로 로그인기능까지 연결”, “전반적인 UI는 이 기획안 이미지를 참고”.
 - 선행 결정: [P0 기술 기반](2026-09-12-p0-technical-foundation.md). 이 문서는 첫 로그인 제공자와 개발 기반 선택을 구체화한다.
@@ -9,7 +9,9 @@
 
 Next.js App Router + TypeScript, Tailwind CSS, Next.js Server Actions/Route Handlers, Supabase Postgres/Auth/Storage/RLS, Vercel, 모바일 Responsive Web/PWA를 사용한다. Supabase Cron/pg_cron은 예약 작업이 필요할 때 사용한다. Native/Expo는 MVP 검증 이후 별도 결정한다.
 
-Google OAuth를 첫 구현 대상으로 한다. 이메일 OTP 기본안 대신 소셜 로그인 연결을 우선하라는 사용자 요청에 따른다. 다른 제공자의 추가나 Operator MFA 정책 변경은 포함하지 않는다. Google 프로필·이메일·openid만 사용하며 Google API의 추가 권한은 요구하지 않는다. 실제 OAuth 제공자 설정·프로젝트 생성·사용자 데이터 처리 검증은 별도 진행 상태로 기록한다.
+Google OAuth를 P0 일반 Participant의 유일한 로그인 방식으로 사용한다. 이메일 OTP와 다른 소셜 로그인 제공자는 P0에서 제외한다. Participant의 Google 계정 접근 복구는 Google의 계정 복구 절차를 사용하며 PROOVIT은 별도 비밀번호 또는 이메일 OTP 복구 기능을 제공하지 않는다. Operator TOTP MFA 원칙은 유지하지만 Operator 인증·복구 구현은 이번 Foundation 범위에서 제외한다. 자세한 승인 범위는 [2026-09-17 Participant 인증 개정](2026-09-17-p0-participant-authentication.md)을 따른다.
+
+Google에서는 기본 프로필·이메일·openid 범위만 사용하고 추가 API 권한을 요구하지 않는다. 실제 OAuth 제공자 설정·프로젝트 생성·사용자 데이터 처리 검증은 별도 진행 상태로 기록한다.
 
 UI는 사용자 제공 `proovit_기획안_f.pptx`의 10–12번 슬라이드를 중심으로 검정 배경, 핑크 강조, 카드와 캐릭터 배치를 참고한다. 이 자료의 상금·AI 검수·실시간 랭킹·하루 여러 미션 등의 예시를 P0 정책으로 가져오지 않는다. 캐릭터는 해당 PPTX의 `ppt/media/image5.png`에서 추출했다. 출시 전 자산 사용 권한은 PO 확인 대상이다.
 

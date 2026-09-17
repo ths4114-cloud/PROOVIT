@@ -1,7 +1,7 @@
 # PROOVIT Sprint 0 Decision Register
 
 - 문서 상태: P0 정책 Accepted
-- 최종 수정일: 2026-09-12
+- 최종 수정일: 2026-09-17
 - 결정자: PO
 - 승인일: 2026-09-12
 - 승인 근거: 현재 Codex 작업의 PO 메시지 — Camera 전용 P0 자동 점수, 일 1회 Ranking, 나머지 최종 권고안 승인
@@ -31,7 +31,7 @@
 | D-008 | Project Pivot | Level 3 | Accepted | Day 10 종료 전 1회, 이전 이력·Score 보존, Final Submission은 최신 Project 기준 | 날짜 경계와 동시 변경 테스트 |
 | D-009 | Ranking 갱신과 동점 | Level 3 | Accepted | 00:00 KST 기준 마감, 00:05 Snapshot. Score→정시 제출 수→마지막 기여 제출시각→공동 순위 | 실패 시 이전 Snapshot 유지와 idempotent 재실행 |
 | D-010 | 공개 프로필 범위 | Level 3 | Accepted | 같은 코호트에 닉네임·기본 아이콘·Score·Rank만 공개 | 개인정보·권한 E2E 검증 |
-| D-011 | 인증과 계정 복구 | Level 3 | Accepted | Supabase 이메일 OTP, Operator TOTP MFA, 운영 SMTP | 전달률·비용·세션·복구와 공급자 설정 검증 |
+| D-011 | 인증과 계정 복구 | Level 3 | Accepted · 2026-09-17 개정 | P0 Participant는 Google OAuth만 사용하고 이메일 OTP 제외. Google 계정 복구 사용. Operator TOTP MFA 원칙 유지 | [Participant 인증 개정](../decisions/2026-09-17-p0-participant-authentication.md). Google 공급자·세션 검증, Operator 인증·복구는 구현 전 별도 보안 설계 |
 | D-012 | 역할과 권한 모델 | Level 3 | Accepted | Participant와 Operator 분리, 서버 검사와 Postgres RLS 이중 적용 | 역할 저장 위치와 권한 행렬 설계 |
 | D-013 | Proof 보존과 삭제 | Level 3 | Accepted | Private 저장, `proofCloseAt` 후 30일에 원본 자동 삭제 | 개인정보 문구·외부 처리자·법적 예외와 삭제 재처리 검증 |
 | D-014 | 기술 기반 | Level 3 | Accepted | Next.js TypeScript PWA + Vercel + Supabase Postgres/Auth/Private Storage | 요금제·데이터 처리 지역·약관·복구·교체 비용 검토 |
@@ -90,6 +90,7 @@ Mission의 id, day, phase, 공개시각, 종료시각, baseScore와 정책 버�
 - 승인일: 2026-09-12
 - 승인 범위: D-001부터 D-020의 P0 제품·기술 방향
 - 명시적 변경: D-002는 Camera 전용, D-003은 P0 자동 인정, D-009는 일 1회 Ranking
+- 후속 개정: D-011의 Participant 인증은 2026-09-17 PO 승인으로 Google OAuth 전용으로 변경했다. 이메일 OTP는 P0에서 제외하며 Operator TOTP MFA 원칙은 유지한다.
 - 후속 의무: 정식 서비스 AI Monitoring은 이번 승인에 포함되지 않으며 별도 Level 3 결정이 필요하다.
 - 조건부 항목: 기술 서비스 결제, 개인정보 최종 문구와 운영 출시 승인은 이번 승인에 포함되지 않는다.
 
