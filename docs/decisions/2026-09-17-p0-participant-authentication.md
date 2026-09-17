@@ -3,7 +3,7 @@
 - 상태: Accepted
 - 결정 수준: Level 3
 - 결정자 / 승인일: PO / 2026-09-17
-- 승인 근거: 현재 Codex 작업의 PO 메시지 “P0 일반 참가자는 Google 로그인만 사용하고 이메일 OTP는 이번 MVP에서 제외”에 대한 “맞아. 구글로그인만으로 변경해줘” 확인. 팀이 확인할 수 있는 GitHub 승인 기록은 PR 병합 전에 연결한다.
+- 승인 근거: [GitHub Issue #4 — P0 정책 승인 범위 및 Participant 인증 개정 기록](https://github.com/ths4114-cloud/PROOVIT/issues/4). PO가 “P0 일반 참가자는 Google 로그인만 사용하고 이메일 OTP는 이번 MVP에서 제외”를 확인하고 변경을 요청했다.
 - 대체하는 결정: [2026-09-12 P0 기술 기반](2026-09-12-p0-technical-foundation.md)의 Participant 이메일 OTP 기본안과 [Decision Register](../sprint-0/DECISION_REGISTER.md)의 기존 D-011
 - 관련 구현: `src/app/login/actions.ts`, `src/app/auth/callback/route.ts`, `src/lib/supabase/server.ts`
 

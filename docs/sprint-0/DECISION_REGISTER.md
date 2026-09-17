@@ -4,7 +4,7 @@
 - 최종 수정일: 2026-09-17
 - 결정자: PO
 - 승인일: 2026-09-12
-- 승인 근거: 현재 Codex 작업의 PO 메시지 — Camera 전용 P0 자동 점수, 일 1회 Ranking, 나머지 최종 권고안 승인
+- 승인 근거: [GitHub Issue #4 — P0 정책 승인 범위 및 Participant 인증 개정 기록](https://github.com/ths4114-cloud/PROOVIT/issues/4)
 - 관련 문서: [PRD](../product/PRD.md), [User Flows](../product/USER_FLOWS.md), [Sprint 0 계획](SPRINT_0_PLAN.md)
 
 이 문서는 구현 전에 닫아야 할 제품·기술 결정을 추적한다. P0의 제품 방향과 Level 3 선택은 PO가 승인했다. `Accepted`는 선택과 승인 조건이 기록됐다는 뜻이며 Architecture, 개인정보 또는 출시 Gate의 남은 검증까지 완료됐다는 뜻은 아니다.
