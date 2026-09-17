@@ -7,7 +7,7 @@
 - 결정자 / 승인 날짜 / 승인 근거: PO / 2026-09-12 / P0 최종 권고안 승인 메시지
 - 관련 Issue / PR / 공식 문서: [PRD](../product/PRD.md), [Decision Register](../sprint-0/DECISION_REGISTER.md)
 - 이전 결정 / 대체 결정: 없음
-- 구현 상태: 미착수
+- 구현 상태: 공통 애플리케이션 기반은 PR #2에서 구현·리뷰 중. 실제 Supabase 프로젝트 설정, DB/RLS/Private Storage와 도메인 기능은 미착수
 
 ## 1. Decision — 무엇을 결정하는가
 
@@ -19,7 +19,7 @@ P0는 Next.js TypeScript PWA, Vercel, Supabase Postgres/Auth/Private Storage를 
 
 ## 2. Context & Reference — 사실과 근거
 
-- 저장소에는 아직 애플리케이션 기반, Architecture, Database, API, Security와 Test Strategy가 없다.
+- 결정 당시 저장소에는 애플리케이션 기반, Architecture, Database, API, Security와 Test Strategy가 없었다. 이후 PR #2에서 실행 기반과 화면 표시 계약, 인증 연결 골격, CI를 추가했지만 DB/RLS/Storage의 운영 계약과 통합 검증은 후속 범위다.
 - [Next.js PWA Guide](https://nextjs.org/docs/app/guides/progressive-web-apps)는 하나의 웹 코드베이스로 설치 가능한 PWA를 구성하는 경로를 제공한다.
 - [Supabase RLS](https://supabase.com/docs/guides/database/postgres/row-level-security)와 [Storage Access Control](https://supabase.com/docs/guides/storage/security/access-control)은 Auth와 DB·Private Storage 권한을 연결한다.
 - Supabase DB 백업은 Storage 객체를 포함하지 않으므로 Proof 파일의 삭제 방지·대사·복구 한계는 별도 검증이 필요하다.

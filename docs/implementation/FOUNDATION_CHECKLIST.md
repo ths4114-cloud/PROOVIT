@@ -16,7 +16,7 @@
 - [x] 환경변수 예시와 비밀값 차단 기준
 - [x] CI, 타입 검사, lint, format, build, 모바일 E2E smoke 테스트
 - [x] 개발·브랜치·역할 인계 문서
-- [ ] Git 커밋·push: 로컬 Git 메타데이터 권한 문제로 다음 턴에 수행
+- [x] Git 커밋·push: `codex/app-foundation`에 반영 (`7021191`, 인증 정책 정리 `410fff3`, 승인 근거 연결 `3fbd917`)
 
 ## 커밋 전 확인할 결정
 
@@ -42,10 +42,11 @@
 - `npm run test:e2e`: 1차 실행에서 Next.js not-found 응답의 상태 코드와 route announcer의 중복 role을 확인해 테스트를 보완했다. 최종 실행 결과는 커밋 전 다시 기록한다.
 - 실제 Google 로그인: Supabase/Google 외부 설정 전이므로 미검증.
 - 실제 DB/RLS/Storage/Camera/Score: 구현 범위 밖이며 미검증.
+- GitHub `CI / verify`: 최신 커밋 `3fbd917`에서 통과.
 
 ## 사람 리뷰 인계
 
-사람 Reviewer는 다음을 확인한 뒤 PR을 승인한다.
+사람 Reviewer는 다음을 확인한 뒤 PR을 승인한다. 2026-09-17 현재 `leejidev`, `zoohopi`, `dadaroo247-web`에게 리뷰를 요청했으며, `leejidev`의 1차 변경 요청을 반영하고 재검토를 요청한 상태다. 사람 승인은 아직 완료되지 않았다.
 
 1. `npm ci` 후 `ENABLE_UI_PREVIEW=true`로 `/preview/home`의 전체 이동 흐름을 확인한다.
 2. `src/lib/contracts.ts`와 `src/lib/routes.ts` 변경이 A·B 작업의 공통 약속과 맞는지 확인한다.

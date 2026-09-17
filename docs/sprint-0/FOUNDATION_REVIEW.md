@@ -1,5 +1,7 @@
 # Sprint 0 Foundation Review
 
+> 이 문서는 2026-09-12의 정책·문서 기반 자체 검토 기록이다. 현재 애플리케이션 FOUNDATION의 구현·검증 상태는 [공통 시작점 작업 기록](../implementation/FOUNDATION.md)과 [마무리 체크리스트](../implementation/FOUNDATION_CHECKLIST.md)를 따른다. Participant 인증은 2026-09-17 결정으로 Google OAuth 전용으로 개정되었다.
+
 - 검토일: 2026-09-12
 - 검토자: Codex Builder 자체 점검
 - 대상 브랜치: `chore/sprint-0-foundation`

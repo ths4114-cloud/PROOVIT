@@ -1,7 +1,7 @@
 # 공통 시작점 작업 기록
 
 - 요청일: 2026-09-15
-- Owner: PO 요청에 따라 Codex 구현. 사람 Reviewer: 내일 함께 개발할 팀원, 사용자 지정 대기.
+- Owner: PO 요청에 따라 Codex 구현. 사람 Reviewer: `leejidev`, `zoohopi`, `dadaroo247-web`.
 - 브랜치: `codex/app-foundation`
 - 기준: `a0dd286`의 승인 정책을 보존하고 원격 `main`의 `1fd94b5`를 병합.
 - 범위: 실행 환경, 모바일 UI 기본 요소, 화면별 독립 파일, 표시 데이터 계약, Google OAuth 연결 코드, 검증과 개발 인계.
@@ -27,7 +27,14 @@
 - Supabase 개발 프로젝트 없음: 연결 코드 구현과 실제 외부 계정 설정·검증을 구분.
 - 프로젝트 설정 화면 위치: PO 답변 대기. 공통 기반에서 실제 참가 저장에 의존하지 않음.
 - DB/RLS/업로드·점수 원자성은 후속 설계와 승인 대상. 본 작업은 migration을 만들지 않음.
-- 사람 리뷰 미지정은 병합 Gate 미충족으로 기록. 조사·공통 기반 작성은 이번 사용자 요청 범위로 진행.
+- 사람 리뷰는 요청했으며 `leejidev`의 1차 변경 요청을 반영했다. 재검토와 사람 승인 전에는 병합 Gate 미충족이다.
+
+## 팀 기능 PR 통합 기준
+
+- FOUNDATION PR #2가 승인·병합되기 전 기능 PR은 `codex/app-foundation`을 임시 base로 둘 수 있지만, FOUNDATION의 확정 계약을 바꾸어서는 안 된다. PR #2 병합 뒤 최신 `main`을 기준으로 재정렬하고 CI를 다시 통과해야 한다.
+- Participant 로그인은 Google OAuth만 사용한다. 이메일 OTP UI·Server Action·Supabase 이메일 템플릿·SMTP 설정은 P0에 추가하지 않는다.
+- `src/app/login`, `src/app/home`, `src/app/layout.tsx`, `src/app/globals.css`, `src/lib/supabase`, `src/proxy.ts`, PWA manifest, 루트 설정·lockfile·CI는 공유 영역이다. 기능 PR이 이를 변경하면 변경 이유와 FOUNDATION 계약 영향을 분리해 리뷰한다.
+- DB migration, RLS, 참가 RPC, Proof·Score 정책 구현은 FOUNDATION 범위가 아니다. 별도 Issue의 Ready 조건, Architecture/API/Security 계약과 PO 승인 범위를 연결한 독립 PR로 진행한다.
 
 ## 참조
 

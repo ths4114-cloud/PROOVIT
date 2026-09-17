@@ -1,7 +1,7 @@
 # PROOVIT Sprint 0 Plan
 
-- 문서 상태: P0 정책 승인 반영, 설계 산출물 진행 필요
-- 최종 수정일: 2026-09-12
+- 문서 상태: P0 정책 승인 및 애플리케이션 FOUNDATION 리뷰 중, 도메인 설계 산출물 진행 필요
+- 최종 수정일: 2026-09-17
 - 권장 Timebox: 집중 작업일 5일, 조건부 결정 검증과 설계 미완료 시 연장
 - 목표: 첫 Vertical Slice가 추측 없이 [Definition of Ready](../DEFINITION_OF_READY.md)를 통과하게 한다
 - 관련 문서: [PRD](../product/PRD.md), [사용자 흐름](../product/USER_FLOWS.md), [결정 목록](DECISION_REGISTER.md)
@@ -250,7 +250,7 @@ Sprint 0는 코드를 많이 만드는 기간이 아니다. 제품 정책, 사�
 - 필요한 CI가 정의되고 실행 가능한 명령이 저장소에 있음
 - 문서 자체 검토와 가능한 독립 리뷰의 결과가 기록됨
 
-현재는 PO 혼자 작업 중이므로 사람 Reviewer와 협업자 지정 항목은 차단 상태로 남을 수 있다. 이 경우 Sprint 0 자료 작성은 완료할 수 있지만 `병합 가능` 또는 구현의 최종 Ready로 표시하지 않는다.
+사람 Reviewer와 협업자는 지정되었다. 다만 리뷰 요청만으로 `병합 가능` 또는 구현의 최종 Ready가 되지는 않으며, 각 PR의 승인·최신 CI·선행 계약을 따로 확인한다.
 
 ## 9. 검토 방법
 
@@ -270,16 +270,18 @@ Sprint 0는 코드를 많이 만드는 기간이 아니다. 제품 정책, 사�
 
 ## 10. 현재 상태
 
-- PRD 0.2: Draft 작성
-- User Flow: Draft 작성
-- Glossary: Draft 작성
+- PRD 0.3: PO Approved, 설계·검증 진행 중
+- User Flow: P0 정책 반영, Wireframe 검토 전
+- Glossary: P0 정책 반영
 - Decision Register: D-001부터 D-020 Accepted, 일부 출시 전 검증 조건 유지
 - PO 승인: 2026-09-12 기록 완료
-- Wireframe: 미작성
-- Architecture, Database, API: 미작성
-- Security, Test Strategy: 미작성
+- 애플리케이션 FOUNDATION: PR #2 구현 완료, 사람 재검토 중
+- 화면 골격: 7개 모바일 화면과 공통 UI 미리보기 구현
+- Architecture, Database: 실제 도메인 구현 전 계약과 보안 검토 필요
+- 표시 API 계약·Security 경계: FOUNDATION 초안 작성, DB/RLS/Storage 운영 계약은 후속
+- Test Strategy: FOUNDATION CI와 모바일 smoke 테스트 구성, 실제 OAuth·기기 Camera·도메인 통합 검증은 후속
 - Vertical Slice Ready: 미통과
-- 사람 Reviewer: 미지정
-- CI: 미설정
+- 사람 Reviewer: 지정 및 재검토 요청 상태
+- CI: PR #2 최신 커밋 통과
 
-따라서 제품 정책 결정은 완료됐지만 현재 단계는 `Sprint 0 설계 산출물 작성 중`이다. Wireframe, Architecture, Database, API, Security, Test Strategy와 Vertical Slice Issue가 없어 구현 시작 상태가 아니다.
+따라서 공통 UI·실행 환경·Google OAuth 연결 골격은 기능 개발의 시작점으로 사용할 수 있다. 실제 참가·Proof·Score Vertical Slice는 Architecture, Database/RLS, API, Security와 테스트 계약을 해당 Issue에서 Ready로 만든 뒤 구현한다. FOUNDATION 사람 승인과 `main` 병합 전에는 이를 최종 기준으로 간주하지 않는다.
