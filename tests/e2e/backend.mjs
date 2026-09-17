@@ -17,7 +17,6 @@ await db.exec(
     'utf8',
   ),
 );
-let email = 'participant@example.test';
 let fault = false;
 const tokens = new Set();
 function user() {
@@ -25,11 +24,11 @@ function user() {
     id: uid,
     aud: 'authenticated',
     role: 'authenticated',
-    email,
+    email: 'participant@example.test',
     email_confirmed_at: new Date().toISOString(),
     confirmed_at: new Date().toISOString(),
-    app_metadata: { provider: 'email', providers: ['email'] },
-    user_metadata: {},
+    app_metadata: { provider: 'google', providers: ['google'] },
+    user_metadata: { full_name: '테스트 참가자' },
     identities: [],
     created_at: new Date().toISOString(),
     is_anonymous: false,
@@ -82,12 +81,21 @@ const server = http.createServer((req, res) => {
         res.writeHead(status);
         res.end(JSON.stringify(data));
       };
-      const path = new URL(req.url, 'http://localhost').pathname;
+      const incoming = new URL(req.url, 'http://localhost');
+      const path = incoming.pathname;
+      if (path === '/auth/v1/authorize' && req.method === 'GET') {
+        const redirectTo = incoming.searchParams.get('redirect_to');
+        if (!redirectTo) return reply(400, { message: 'Missing redirect_to' });
+        res.writeHead(302, { Location: `${redirectTo}?code=test-oauth-code` });
+        return res.end();
+      }
       let raw = '';
       for await (const chunk of req) raw += chunk;
       let body = {};
       try {
-        body = JSON.parse(raw || '{}');
+        body = req.headers['content-type']?.includes('application/x-www-form-urlencoded')
+          ? Object.fromEntries(new URLSearchParams(raw))
+          : JSON.parse(raw || '{}');
       } catch {
         return reply(400, { message: 'Invalid JSON' });
       }
@@ -123,15 +131,10 @@ const server = http.createServer((req, res) => {
         });
       const token = req.headers.authorization?.replace(/^Bearer /i, '');
       const signedIn = tokens.has(token);
-      if (path === '/auth/v1/otp') {
-        email = body.email;
-        return reply(200, {});
-      }
-      if (path === '/auth/v1/verify')
-        return body.token === '123456'
-          ? reply(200, session())
-          : reply(403, { code: 'otp_expired', msg: 'invalid code' });
-      if (path === '/auth/v1/token') return reply(200, session());
+      if (path === '/auth/v1/token')
+        return body.auth_code === 'invalid'
+          ? reply(400, { code: 'bad_oauth_code', msg: 'invalid code' })
+          : reply(200, session());
       if (path === '/auth/v1/user')
         return signedIn ? reply(200, user()) : reply(401, { code: 'bad_jwt', msg: 'Invalid JWT' });
       if (path === '/auth/v1/logout') {
@@ -172,5 +175,5 @@ const server = http.createServer((req, res) => {
     });
 });
 server.listen(54329, '127.0.0.1', () =>
-  console.log('TEST ONLY Supabase adapter ready on 127.0.0.1:54329; fixed OTP 123456'),
+  console.log('TEST ONLY Supabase adapter ready on 127.0.0.1:54329; Google OAuth test flow'),
 );

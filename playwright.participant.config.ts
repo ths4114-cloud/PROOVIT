@@ -27,7 +27,8 @@ export default defineConfig({
       url: 'http://localhost:3000',
       env: {
         NEXT_PUBLIC_SUPABASE_URL: 'http://127.0.0.1:54329',
-        NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: 'test-publishable-key',
+        NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: 'sb_publishable_test-key',
+        APP_ORIGIN: 'http://localhost:3000',
         PROOVIT_CHALLENGE_SLUG: 'launch-31',
         PROOVIT_LOCAL_PREVIEW: 'true',
       },

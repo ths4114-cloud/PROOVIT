@@ -5,18 +5,13 @@ async function control(request: APIRequestContext, data: object) {
   const response = await request.post(`${backend}/__test/control`, { data });
   expect(response.ok()).toBeTruthy();
 }
-async function login(page: Page, join = true) {
-  await page.goto(join ? '/' : '/login');
-  if (join) {
-    await page.getByLabel('참가 규칙을 확인했습니다.').check();
-    await page.getByRole('button', { name: '챌린지 참가하기' }).click();
-  }
+async function login(page: Page) {
+  await page.goto('/');
+  await page.getByLabel('참가 규칙을 확인했습니다.').check();
+  await page.getByRole('button', { name: '챌린지 참가하기' }).click();
   await expect(page).toHaveURL(/\/login/);
-  await page.getByLabel('이메일', { exact: true }).fill('participant@example.test');
-  await page.getByRole('button', { name: '이메일로 시작하기' }).click();
-  await page.getByLabel('인증 코드', { exact: true }).fill('123456');
-  await page.getByRole('button', { name: '확인하고 시작하기' }).click();
-  await expect(page).toHaveURL(join ? /\/home$/ : /\/$/);
+  await page.getByRole('button', { name: 'Google로 계속하기' }).click();
+  await expect(page).toHaveURL(/\/home$/);
 }
 test.beforeEach(async ({ request }) => {
   await request.post(`${backend}/__test/reset`);
@@ -29,7 +24,7 @@ test('one-click local preview opens the populated home', async ({ page }) => {
   await expect(page.getByTestId('current-day')).toContainText('1');
   await expect(page.getByTestId('total-score')).toHaveText('0점');
 });
-test('join → OTP → persistent home, real SQL score, duplicate protection and logout', async ({
+test('join → Google OAuth → persistent home, real SQL score, duplicate protection and logout', async ({
   page,
   request,
 }) => {
@@ -68,17 +63,13 @@ test('join → OTP → persistent home, real SQL score, duplicate protection and
   await page.goto('/home');
   await expect(page).toHaveURL(/\/login/);
 });
-test('invalid OTP is recoverable and cannot grant access', async ({ page }) => {
-  await page.goto('/login');
-  await page.getByLabel('이메일', { exact: true }).fill('participant@example.test');
-  await page.getByRole('button', { name: '이메일로 시작하기' }).click();
-  await page.getByLabel('인증 코드', { exact: true }).fill('000000');
-  await page.getByRole('button', { name: '확인하고 시작하기' }).click();
-  await expect(page.locator('#verify-error')).toContainText('만료');
-  await page.getByLabel('인증 코드', { exact: true }).fill('123456');
-  await page.getByRole('button', { name: '확인하고 시작하기' }).click();
-  await expect(page).toHaveURL(/\/$/);
-  await expect(page.getByRole('button', { name: '챌린지 참가하기' })).toBeVisible();
+test('invalid OAuth callback is recoverable and cannot grant access', async ({ page }) => {
+  await page.goto('/auth/callback?code=invalid');
+  await expect(page).toHaveURL(/\/login\?error=callback$/);
+  await expect(page.locator('.auth-error')).toContainText('로그인을 완료하지 못했어요');
+  await expect(page.getByRole('button', { name: 'Google로 계속하기' })).toBeVisible();
+  await page.goto('/home');
+  await expect(page).toHaveURL(/\/login$/);
 });
 test('before start, missing mission, ended, enrollment closed and data failure show honest states', async ({
   page,
@@ -145,6 +136,7 @@ test('360px and desktop layouts do not overflow; guide is keyboard accessible', 
       await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth),
     ).toBeTruthy();
   }
+  await page.locator('summary').scrollIntoViewIfNeeded();
   await page.locator('summary').focus();
   await page.keyboard.press('Enter');
   await expect(page.getByText('타깃 고객 한 명을 떠올려 보세요.', { exact: false })).toBeVisible();
@@ -166,11 +158,8 @@ test('enrollment closing during login preserves session without creating partici
   await page.goto('/');
   await page.getByLabel('참가 규칙을 확인했습니다.').check();
   await page.getByRole('button', { name: '챌린지 참가하기' }).click();
-  await page.getByLabel('이메일', { exact: true }).fill('participant@example.test');
-  await page.getByRole('button', { name: '이메일로 시작하기' }).click();
   await control(request, { closed: true });
-  await page.getByLabel('인증 코드', { exact: true }).fill('123456');
-  await page.getByRole('button', { name: '확인하고 시작하기' }).click();
+  await page.getByRole('button', { name: 'Google로 계속하기' }).click();
   await expect(page).toHaveURL(/notice=join-retry/);
   await expect(page.getByRole('button', { name: '로그아웃' })).toBeVisible();
   expect((await (await request.get(`${backend}/__test/count`)).json()).count).toBe(0);

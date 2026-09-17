@@ -469,6 +469,25 @@ input:focus {
   background: var(--pink);
   box-shadow: 0 5px 22px #ff408b18;
 }
+.google-button {
+  color: #171419;
+  background: #fff;
+  border: 1px solid #dedbe2;
+  margin-top: 24px;
+}
+.google-button span {
+  display: grid;
+  width: 24px;
+  height: 24px;
+  place-items: center;
+  border-radius: 50%;
+  color: #4285f4;
+  font-size: 17px;
+  font-weight: 800;
+}
+.auth-error {
+  margin-top: 20px;
+}
 .button svg {
   margin-left: auto;
 }

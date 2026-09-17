@@ -14,7 +14,7 @@ PROOVIT은 사용자의 목표를 일일 Mission으로 전환하고, 앱 내 Cam
 
 ## 참가자 화면 실행
 
-챌린지 소개, 이메일 OTP 로그인, 참가 상태, 오늘의 미션과 누적 점수를 표시하는 모바일 PWA가 구현되어 있습니다.
+챌린지 소개, Google 로그인, 참가 상태, 오늘의 미션과 누적 점수를 표시하는 모바일 PWA가 구현되어 있습니다.
 
 ```sh
 npm ci
@@ -22,7 +22,7 @@ cp .env.example .env.local
 npm run dev
 ```
 
-`.env.local`에 Supabase의 `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`와 표시할 `PROOVIT_CHALLENGE_SLUG`를 입력합니다. DB 구조와 개발용 데이터는 `supabase/migrations` 및 `supabase/seed.sql`에 있습니다. 자세한 설정과 검증 순서는 `docs/handoff/RUNBOOK.md`를 따릅니다.
+`.env.local`에 Supabase의 `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, 앱의 `APP_ORIGIN`과 표시할 `PROOVIT_CHALLENGE_SLUG`를 입력합니다. DB 구조와 개발용 데이터는 `supabase/migrations` 및 `supabase/seed.sql`에 있습니다. 자세한 설정과 Google Provider 구성, 검증 순서는 `docs/handoff/RUNBOOK.md`를 따릅니다.
 
 Mac에서 데이터 연결 없이 화면만 확인하려면 `PROOVIT 화면보기.command`를 더블클릭합니다. 이 실행기는 로컬 테스트 데이터만 사용합니다.
 

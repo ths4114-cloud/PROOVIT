@@ -1,6 +1,6 @@
-# 로컬 검증 결과 — 2026-09-16
+# 로컬 검증 결과 — 2026-09-17
 
-대상 구현: `feat/participant-challenge-auth-home`의 Pull Request 제출 전 작업 트리.
+대상 구현: `feat/participant-screens-v2`의 Pull Request 제출 전 작업 트리.
 검증자: Codex 자체 점검. 별도 사람 Reviewer/독립 보안 리뷰 없음.
 환경: macOS arm64, Node 24.21.0, npm 11.19.0, Next.js 16.3.5, Supabase CLI 2.117.0. 패키지 정확한 버전은 package-lock.json.
 
@@ -14,20 +14,20 @@
 | `npm run build` | 통과 | Webpack production build, `/`, `/login`, `/home`, manifest 및 proxy 생성 |
 | `npm run test:e2e` | 3/3 통과 | 기존 앱 기반의 미션 화면과 인증 callback 회귀 검사 |
 | `npm run test:e2e:participant` | 8/8 통과 | Chromium 153, production Next 서버 + 실제 SQL, Auth/HTTP API 대역 |
-| `npm run test:concurrency` | 2개 시나리오 통과 | PostgreSQL 17.10, 20개 독립 연결의 동시 참가 / rollback 후 재시도 |
+| `npm run test:concurrency` | 이번 재구현에서 미실행 | migration은 이전 검증본과 동일하며 PostgreSQL 17 CI에서 20개 연결 동시 참가를 재검증하도록 구성 |
 | Prettier check | 통과 | 새 소스·테스트·설정의 형식 검사 |
 | `git diff --check` | 통과 | whitespace 점검 |
 | 모바일/데스크톱 자체 검수 | 수행 | 360/390/1280px 가로 넘침 없음, 실제 화면 캡처 확인, 미션 가이드 키보드 접근 |
-| npm 설치 audit | 알려진 취약점 0 보고 | 마지막 설치 당시 399개 패키지, 독립 보안 감사를 뜻하지 않음 |
+| npm 설치 audit | 알려진 취약점 0 보고 | 마지막 설치 당시 400개 패키지, 독립 보안 감사를 뜻하지 않음 |
 
-브라우저 테스트 11개가 통과했다. 시나리오 내 잘못된 OTP, DB 중단, 참가 마감 오류 로그는 의도된 실패 주입의 결과다.
+브라우저 테스트 11개가 통과했다. 시나리오 내 잘못된 OAuth callback, DB 중단, 참가 마감 오류 로그는 의도된 실패 주입의 결과다.
 
 ## 확인한 내용
 
-- Challenge 소개 → 규칙 확인 → OTP → 참가 저장 → Home.
+- Challenge 소개 → 규칙 확인 → Google OAuth callback → 참가 저장 → Home.
 - 새로고침 후 세션·참가 상태, 확정 이벤트 100점 추가 후 홈 갱신.
 - 기존 참가자에게 홈으로 이동 안내, 로그아웃 후 보호된 홈 접근 차단.
-- 잘못된 OTP 후 올바른 코드로 복구. 인증 도중 참가 마감 시 로그인은 유지하고 참가 생성은 하지 않음.
+- 잘못된 OAuth callback의 고정 오류 경로. 인증 도중 참가 마감 시 로그인은 유지하고 참가 생성은 하지 않음.
 - 시작 전, 오늘 미션 없음, 기간 종료, DB 실패 후 다시 불러오기.
 - 한국 자정, 윤년, 미국 DST, Day 31과 종료 이후 경계.
 - 익명 조회 제한, 타인 참가/점수 미노출, 미래 미션 제한, 일반 사용자의 직접 insert/update/delete 제한.
@@ -46,14 +46,14 @@
 
 ## 미검증 / 남은 Gate
 
-- 실제 Supabase GoTrue/PostgREST/SMTP에서 메일 발송과 로그인.
+- 실제 Supabase GoTrue/PostgREST와 Google Provider에서 로그인·취소·callback.
 - 실제 공급자 세션 만료/refresh token 회전·철회 경계. 브라우저 새로고침 지속성만 대역으로 확인.
 - Supabase advisor 결과, Docker 로컬 전체 스택, Vercel Preview/배포.
 - iOS Safari/Android 실기기 설치·홈 화면 재진입. Chromium headless의 manifest/worker는 확인.
 - 전체 WCAG 준수 감사, 성능 목표, 개인정보 동의·삭제/보존 운영 정책.
 - 팀 PO 결정 승인, 다른 팀원의 계약 합의, 사람 리뷰, GitHub CI 실제 실행/브랜치 보호.
 
-상태: **로컬 코드·검증 산출물 준비, 실제 서비스 연결과 팀 Gate 남음. 병합·출시 미진행.** 테스트 대역은 실제 인증/이메일 전달 검증을 대체하지 않는다.
+상태: **로컬 코드·검증 산출물 준비, 실제 서비스 연결과 팀 Gate 남음. 병합·출시 미진행.** 테스트 대역은 실제 Google OAuth 검증을 대체하지 않는다.
 
 ## 재현
 

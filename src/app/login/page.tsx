@@ -2,11 +2,16 @@ import Link from 'next/link';
 import { ArrowLeft, ShieldCheck } from 'lucide-react';
 import { redirect } from 'next/navigation';
 import { Shell, SetupNotice } from '@/components/shell';
-import { LoginForm } from '@/components/forms';
+import { GoogleLogin } from '@/components/google-login';
 import { getSupabaseConfig } from '@/lib/env';
 import { getContext } from '@/lib/data';
+import { getAppOrigin } from '@/lib/supabase/config';
 export const dynamic = 'force-dynamic';
-export default async function LoginPage() {
+export default async function LoginPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ error?: string }>;
+}) {
   if (!getSupabaseConfig())
     return (
       <Shell>
@@ -15,6 +20,7 @@ export default async function LoginPage() {
     );
   const { user } = await getContext();
   if (user) redirect('/home');
+  const showCallbackError = (await searchParams).error === 'callback';
   return (
     <Shell>
       <section className="login-section">
@@ -32,14 +38,19 @@ export default async function LoginPage() {
           <span>증명할 시간.</span>
         </h1>
         <p className="muted login-intro">
-          이메일로 간편하게 시작하세요.
+          Google 계정으로 간편하게 시작하세요.
           <br />
-          비밀번호 없이, 나의 도전을 이어갈 수 있어요.
+          로그인 후 나의 도전을 이어갈 수 있어요.
         </p>
-        <LoginForm />
+        {showCallbackError && (
+          <p role="alert" className="form-error auth-error">
+            로그인을 완료하지 못했어요. 취소했거나 연결 시간이 지났을 수 있어요. 다시 시도해 주세요.
+          </p>
+        )}
+        <GoogleLogin enabled={Boolean(getSupabaseConfig() && getAppOrigin())} />
         <p className="auth-footnote">
           <ShieldCheck size={17} />
-          이메일은 계정 인증과 로그인에 사용됩니다.
+          기본 프로필과 이메일은 계정 인증에만 사용됩니다.
         </p>
       </section>
     </Shell>
