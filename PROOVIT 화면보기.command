@@ -75,7 +75,8 @@ if [[ "$BACKEND_READY" != "true" ]]; then
 fi
 
 NEXT_PUBLIC_SUPABASE_URL="http://127.0.0.1:54329" \
-NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY="local-preview-key" \
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY="sb_publishable_local-preview-key" \
+APP_ORIGIN="http://127.0.0.1:3000" \
 PROOVIT_CHALLENGE_SLUG="launch-31" \
 PROOVIT_LOCAL_PREVIEW="true" \
 npm run dev -- --hostname 127.0.0.1 >"$PROJECT_DIR/.preview-cache/app.log" 2>&1 &
