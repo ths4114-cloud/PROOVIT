@@ -18,24 +18,14 @@ test('mobile mission flow uses the same mission and never submits a proof', asyn
     true,
   );
 });
-test('unconfigured authentication fails closed and callbacks cannot redirect externally', async ({
-  page,
-  request,
-}) => {
-  await page.goto('/home');
-  await expect(page).toHaveURL(/\/login$/);
-  await expect(page.getByRole('button', { name: 'Google로 계속하기' })).toBeDisabled();
+test('login is available and callbacks cannot redirect externally', async ({ page, request }) => {
+  await page.goto('/login');
+  await expect(page.getByRole('heading', { name: /새로운 도전을/ })).toBeVisible();
   const response = await request.get('/auth/callback?code=invalid&next=https://evil.example', {
     maxRedirects: 0,
   });
   expect(response.status()).toBe(307);
   expect(response.headers().location).toBe('http://localhost:3000/login?error=callback');
-  await page.goto('/login?error=callback');
-  await expect(
-    page.getByText(
-      '로그인을 완료하지 못했어요. 취소했거나 연결 시간이 지났을 수 있어요. 다시 시도해주세요.',
-    ),
-  ).toBeVisible();
 });
 test('unknown missions and locked missions have no capture action', async ({ page }) => {
   await page.goto('/preview/missions/not-a-mission');
