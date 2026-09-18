@@ -107,6 +107,19 @@ export function CameraCapture() {
       }
       video.srcObject = stream;
       await video.play();
+      if (video.videoWidth === 0 || video.videoHeight === 0) {
+        await new Promise<void>((resolve, reject) => {
+          const timeout = window.setTimeout(() => {
+            video.removeEventListener('loadedmetadata', handleLoadedMetadata);
+            reject(new Error('Camera metadata timed out.'));
+          }, 5000);
+          function handleLoadedMetadata() {
+            window.clearTimeout(timeout);
+            resolve();
+          }
+          video.addEventListener('loadedmetadata', handleLoadedMetadata, { once: true });
+        });
+      }
       if (mountedRef.current) setStatus('streaming');
     } catch (error) {
       stopCamera();
