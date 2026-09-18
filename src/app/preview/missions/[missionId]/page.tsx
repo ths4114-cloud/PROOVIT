@@ -25,6 +25,32 @@ export default async function Detail({ params }: { params: Promise<{ missionId: 
           ))}
         </ol>
       </Card>
+      <Card>
+        <h2 className="font-bold">오늘의 제출</h2>
+        <ul className="mt-4 space-y-3">
+          {m.submissionItems.map((item) => (
+            <li key={item} className="flex gap-3 text-sm leading-7">
+              <span className="text-pink-400" aria-hidden="true">
+                •
+              </span>
+              <span>{item}</span>
+            </li>
+          ))}
+        </ul>
+      </Card>
+      <Card>
+        <h2 className="font-bold">완료 기준</h2>
+        <ul className="mt-4 space-y-3">
+          {m.completionCriteria.map((criterion) => (
+            <li key={criterion} className="flex gap-3 text-sm leading-7">
+              <span className="text-pink-400" aria-hidden="true">
+                ✓
+              </span>
+              <span>{criterion}</span>
+            </li>
+          ))}
+        </ul>
+      </Card>
       <StateNotice title="인증 사진 안내">{m.proofGuide}</StateNotice>
       {m.status === 'available' ? (
         <ActionLink href={previewRoutes.camera(m.id)} className="w-full">

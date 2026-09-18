@@ -16,6 +16,8 @@ export interface MissionSummary {
 export interface MissionDetail extends MissionSummary {
   description: string;
   steps: readonly string[];
+  submissionItems: readonly string[];
+  completionCriteria: readonly string[];
   proofGuide: string;
 }
 export interface ScoreResult {

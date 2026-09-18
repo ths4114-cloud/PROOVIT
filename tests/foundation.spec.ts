@@ -6,7 +6,11 @@ test('mobile mission flow uses the same mission and never submits a proof', asyn
   ).toBeVisible();
   await page.getByRole('link', { name: '미션 시작하기' }).click();
   await expect(page).toHaveURL(/\/preview\/missions\/day-12$/);
-  await expect(page.getByRole('heading', { name: '고객 인터뷰 질문 7개 만들기' })).toBeVisible();
+  await expect(
+    page.getByRole('heading', { name: '두 번째 고객에게 같은 문제를 확인하세요' }),
+  ).toBeVisible();
+  await expect(page.getByRole('heading', { name: '오늘의 제출' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: '완료 기준' })).toBeVisible();
   await page.getByRole('link', { name: '카메라 인증 화면 보기' }).click();
   await expect(page.getByRole('button', { name: '촬영 기능 연결 예정' })).toBeDisabled();
   await page.getByRole('link', { name: '점수 결과 예시 보기' }).click();
