@@ -1,15 +1,15 @@
 # PROOVIT
 
-PROOVIT은 사용자의 목표를 검증 가능한 미션으로 전환하고, 실행 결과를 Proof로 확인해 Score와 Ranking에 반영하는 Goal Competition 서비스입니다.
+PROOVIT은 사용자의 목표를 일일 Mission으로 전환하고, 앱 내 Camera Proof 제출을 Score와 Ranking에 반영하는 Goal Competition 서비스입니다.
 
 첫 번째 제품 범위는 솔로프리너를 위한 31일 MVP 런칭 챌린지입니다.
 
 ## 현재 단계
 
 - 저장소 및 4인 협업 환경 구성
-- 정식 출시 기준 PRD 초안 작성
-- Sprint 0 제품 정책 결정 준비
-- 유저플로우 초안 작성
+- P0 MVP PRD와 제품 정책 PO 승인 완료
+- 정식 서비스 AI Proof Monitoring은 후속 결정으로 분리
+- 승인 정책 기준의 User Flow 작성
 - 로우파이 와이어프레임 설계 예정
 
 ## 협업 방식
@@ -27,7 +27,12 @@ PROOVIT은 사용자의 목표를 검증 가능한 미션으로 전환하고, �
 - 공식 용어: `docs/product/GLOSSARY.md`
 - Sprint 0 계획: `docs/sprint-0/SPRINT_0_PLAN.md`
 - Sprint 0 결정 목록: `docs/sprint-0/DECISION_REGISTER.md`
+- P0 제품 정책 결정: `docs/decisions/2026-09-12-p0-product-policy.md`
+- P0 기술 기반 결정: `docs/decisions/2026-09-12-p0-technical-foundation.md`
 - 구현 시작 조건: `docs/DEFINITION_OF_READY.md`
 - 구현 완료 조건: `docs/DEFINITION_OF_DONE.md`
 - 코드 리뷰 기준: `docs/CODE_REVIEW_CHECKLIST.md`
 - 엔지니어링 가이드: `docs/ENGINEERING_GUIDE.md`
+- 공통 기반 개발 안내: `docs/DEVELOPMENT.md`
+- 공통 기반 체크리스트: `docs/implementation/FOUNDATION_CHECKLIST.md`
+- 화면 계약 초안: `docs/implementation/API_CONTRACT.md`

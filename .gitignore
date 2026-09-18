@@ -32,4 +32,6 @@ Desktop.ini
 work/
 tmp/
 *.tmp
-
+*.tsbuildinfo
+playwright-report/
+test-results/

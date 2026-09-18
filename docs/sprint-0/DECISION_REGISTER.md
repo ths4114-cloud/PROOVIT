@@ -1,202 +1,113 @@
 # PROOVIT Sprint 0 Decision Register
 
-- 문서 상태: Draft
-- 최종 수정일: 2026-09-12
+- 문서 상태: P0 정책 Accepted
+- 최종 수정일: 2026-09-17
 - 결정자: PO
-- 관련 문서: [PRD](../product/PRD.md), [Sprint 0 계획](SPRINT_0_PLAN.md)
+- 최초 정책 기록일: 2026-09-12 (`a0dd286`)
+- 확인 가능한 PO 재확인일: 2026-09-17
+- 승인 근거: [GitHub Issue #4 — P0 정책 승인 범위 및 Participant 인증 개정 기록](https://github.com/ths4114-cloud/PROOVIT/issues/4)
+- 관련 문서: [PRD](../product/PRD.md), [User Flows](../product/USER_FLOWS.md), [Sprint 0 계획](SPRINT_0_PLAN.md)
 
-이 문서는 구현 전에 닫아야 할 제품·기술 결정을 추적한다. `추천`은 분석 결과이며 승인된 결정이 아니다. Level 3 항목은 PO 승인 기록과 Engineering Decision 문서가 생기기 전까지 구현 기준으로 사용할 수 없다.
+이 문서는 구현 전에 닫아야 할 제품·기술 결정을 추적한다. P0의 제품 방향과 Level 3 선택은 PO가 승인했다. `Accepted`는 선택과 승인 조건이 기록됐다는 뜻이며 Architecture, 개인정보 또는 출시 Gate의 남은 검증까지 완료됐다는 뜻은 아니다.
 
 ## 상태 정의
 
 - Open: 분석을 시작하지 않았거나 선택지가 부족함
 - Proposed: 대안과 추천안이 준비됐으나 미승인
-- Accepted: PO가 범위와 근거를 승인하고 기록함
+- Accepted: PO가 범위와 근거를 승인함
 - Rejected: 채택하지 않기로 결정함
 - Superseded: 후속 결정이 이전 결정을 대체함
 
-## 우선 결정 목록
+## 승인된 결정 목록
 
-| ID | 결정 | 수준 | 상태 | 추천안 | 차단 범위 |
+| ID | 결정 | 수준 | 상태 | 승인 내용 | 남은 검증 또는 재검토 조건 |
 | --- | --- | --- | --- | --- | --- |
-| D-001 | Launch MVP와 금전 리워드 경계 | Level 3 | Proposed | Eligibility까지만 구현, 결제·정산 제외 | Challenge 안내, Reward UI, 법률 범위 |
-| D-002 | Proof 입력 방식 | Level 3 | Proposed | 미션별 카메라 또는 이미지 업로드 허용 | UX, 접근성, 파일 보안 |
-| D-003 | Proof 검수 방식 | Level 3 | Proposed | Operator 수동 검수, AI 단독 판정 제외 | Proof 상태, Score 확정, 운영 인력 |
-| D-004 | Deadline과 기준 시간대 | Level 3 | Proposed | Challenge 시간대의 매일 23:59 | Score, 알림, 날짜 경계 테스트 |
-| D-005 | baseScore와 지연 배율 | Level 3 | Proposed | 모든 Mission 100점, 1.0/0.7/0.4/0 | Score와 Reward Eligibility |
-| D-006 | scoreRate 계산식 | Level 3 | Proposed | 승인 Score 합 ÷ 전체 Mission 최대 Score | Reward Eligibility, 지표 |
-| D-007 | 중도 참가와 이탈 | Level 3 | Proposed | 첫 코호트는 시작 후 참가 불가, 자발적 이탈만 기록 | Participation 상태와 UX |
-| D-008 | Project Pivot | Level 3 | Proposed | VALIDATE 시작 전 1회, 변경 이력 보존 | Project, Mission Context, 분석 |
-| D-009 | Ranking 동점 | Level 3 | Proposed | Score, 정시 승인 Mission 수, 마지막 점수 달성 시각 순 | Ranking과 Rival |
-| D-010 | 공개 프로필 범위 | Level 3 | Open | 닉네임, 아이콘, Score와 Rank만 공개 검토 | 개인정보, Leaderboard |
-| D-011 | 인증과 계정 복구 | Level 3 | Open | 관리형 Auth 우선 검토 | Account, 권한, SaaS |
-| D-012 | 역할과 권한 모델 | Level 3 | Proposed | Participant와 Operator 분리, 서버 권한 검사 | 전체 보호 자원과 운영 기능 |
-| D-013 | Proof 보존과 삭제 | Level 3 | Open | 최소 보존, 사용자 삭제 요청과 운영 예외 분리 | 개인정보, 저장 비용, 복구 |
-| D-014 | 기술 기반 | Level 3 | Open | PWA 우선 검토, 대안 비교 후 확정 | 전체 아키텍처와 배포 |
-| D-015 | 지원 브라우저와 기기 | Level 2 | Open | 실제 파일럿 사용 환경 조사 후 확정 | UI, 카메라, 테스트 범위 |
-| D-016 | 성능·가용성·복구 목표 | Level 3 | Open | 파일럿 규모와 실패 비용을 먼저 가정 | NFR, 인프라, 운영 비용 |
-| D-017 | Fruvi 출시 범위 | Level 3 | Proposed | P1, P0 안정화 이후 Context Guide부터 | AI 공급자, 개인정보, 비용 |
-| D-018 | 알림 출시 범위 | Level 3 | Proposed | P1, Daily Open과 Deadline부터 | 권한, 중복, 재시도, 비용 |
-| D-019 | North Star와 파일럿 목표값 | Level 3 | Proposed | Final Submission Rate + Same-day Approved Mission Rate | 분석 계약, 출시 판정 |
-| D-020 | 31개 Mission 콘텐츠 | Level 3 | Open | 공통 Mission과 명확한 검수 기준을 콘텐츠 리뷰 | 제품 품질과 공정성 |
+| D-001 | P0와 금전 리워드 경계 | Level 3 | Accepted | Reward Eligibility까지만 구현, 결제·참가비·정산 제외 | 실제 금전 지급 전에 법률·부정행위·정산 정책 재결정 |
+| D-002 | Proof 입력 방식 | Level 3 | Accepted | 앱 내 Camera Capture만 허용, 사진첩·Screenshot·파일 업로드 차단 | 기기별 Camera API와 권한 실패 E2E 검증 |
+| D-003 | P0 Proof 인정 방식 | Level 3 | Accepted | AI·Operator 내용 검수 없이 기술 검증과 저장 성공 즉시 `accepted` 및 Score 확정 | 정식 서비스 AI Monitoring은 별도 Level 3 결정 |
+| D-004 | Deadline과 기준 시간대 | Level 3 | Accepted | Asia/Seoul, 매일 00:00 해금, 다음 날 00:00 미만을 당일로 판정 | 장애 연장 절차와 시간 경계 테스트 |
+| D-005 | baseScore와 지연 배율 | Level 3 | Accepted | 모든 Mission 100점, 당일 1.0, 다음 날 0.7, 2일 이상 0.4, 미제출 0 | `proofCloseAt` 경계 테스트 |
+| D-006 | scoreRate 계산식 | Level 3 | Accepted | 유효 Score 합 ÷ 유효 Mission 최대 Score 합, 운영 취소 Mission 분모 제외 | 정책 버전과 취소 절차 계약 |
+| D-007 | 중도 참가와 이탈 | Level 3 | Accepted | 시작 후 참가 불가, 미수행 자동 탈락 없음, 명시적 철회만 기록 | 철회 확인 UX와 재참가 금지 테스트 |
+| D-008 | Project Pivot | Level 3 | Accepted | Day 10 종료 전 1회, 이전 이력·Score 보존, Final Submission은 최신 Project 기준 | 날짜 경계와 동시 변경 테스트 |
+| D-009 | Ranking 갱신과 동점 | Level 3 | Accepted | 00:00 KST 기준 마감, 00:05 Snapshot. Score→정시 제출 수→마지막 기여 제출시각→공동 순위 | 실패 시 이전 Snapshot 유지와 idempotent 재실행 |
+| D-010 | 공개 프로필 범위 | Level 3 | Accepted | 같은 코호트에 닉네임·기본 아이콘·Score·Rank만 공개 | 개인정보·권한 E2E 검증 |
+| D-011 | 인증과 계정 복구 | Level 3 | Accepted · 2026-09-17 개정 | P0 Participant는 Google OAuth만 사용하고 이메일 OTP 제외. Google 계정 복구 사용. Operator TOTP MFA 원칙 유지 | [Participant 인증 개정](../decisions/2026-09-17-p0-participant-authentication.md). Google 공급자·세션 검증, Operator 인증·복구는 구현 전 별도 보안 설계 |
+| D-012 | 역할과 권한 모델 | Level 3 | Accepted | Participant와 Operator 분리, 서버 검사와 Postgres RLS 이중 적용 | 역할 저장 위치와 권한 행렬 설계 |
+| D-013 | Proof 보존과 삭제 | Level 3 | Accepted | Private 저장, `proofCloseAt` 후 30일에 원본 자동 삭제 | 개인정보 문구·외부 처리자·법적 예외와 삭제 재처리 검증 |
+| D-014 | 기술 기반 | Level 3 | Accepted | Next.js TypeScript PWA + Vercel + Supabase Postgres/Auth/Private Storage | 요금제·데이터 처리 지역·약관·복구·교체 비용 검토 |
+| D-015 | 지원 브라우저와 기기 | Level 2 | Accepted | iOS Safari·Android Chrome 최신 2개 주요 버전, Operator Desktop Chrome·Edge 최신 2개 | 실제 기기 Camera 권한·백그라운드·회전 테스트 |
+| D-016 | 성능·가용성·복구 | Level 3 | Accepted | 최대 456명, API p95 1초, LCP p75 2.5초, DB RPO 24시간·RTO 4시간 최소선 | 동시 업로드·Storage 용량/비용·Proof 복구 시험 |
+| D-017 | Fruvi 출시 범위 | Level 3 | Accepted | P1, P0 안정화 후 Context Guide부터 | AI 공급자와 개인정보 결정 후 Ready 재판정 |
+| D-018 | 알림 출시 범위 | Level 3 | Accepted | P1, P0는 앱 내 상태만 제공 | Daily Open·Deadline 알림을 별도 Ready로 진행 |
+| D-019 | 개인 성공과 측정 | Level 3 | Accepted | `scoreRate >= 0.85 AND mvpSubmitted = true`; 코호트 KPI 목표값은 첫 데이터 후 결정 | Analytics 계약의 분모·제외 사용자 확정 |
+| D-020 | 31개 Mission 구조·콘텐츠 | Level 3 | Accepted | 매일 해금 후 다시 잠기지 않고 Day 31 종료+72시간까지 제출; 구조 먼저 개발, 내용은 코호트 전 잠금 | 31개 개별 콘텐츠 리뷰와 Seed 버전 검증 |
 
-## D-001 Launch MVP와 금전 리워드 경계
+## 핵심 정책 상세
 
-### 무엇인지
+### P0 Proof와 정식 서비스 AI Monitoring
 
-Reward Eligibility는 조건 충족 여부를 계산하는 기능이고 Reward Settlement는 실제 돈이나 보상을 지급하는 기능이다.
-
-### 제품 영향
-
-실제 상금을 포함하면 결제, 환불, 본인 확인, 부정 참가, 세무·법률 검토, 정산 오류와 분쟁 대응이 제품 P0가 된다.
-
-### 대안
-
-- A: Launch MVP에서 참가비와 상금 정산까지 구현
-- B: Reward Eligibility까지만 구현하고 정산은 하지 않음
-- C: Eligibility는 제품이 계산하고, 별도 운영 절차로 제한된 보상을 수동 지급
-
-### 추천
-
-B를 추천한다. 핵심 행동 루프와 데이터 신뢰성을 먼저 검증하고 실제 금전 범위는 별도 결정으로 분리한다. 금전 압력의 효과를 검증하지 못하는 단점은 감수한다.
-
-### PO가 결정할 내용
-
-- 첫 출시가 실제 돈을 받거나 지급하는가
-- 안내 문구에서 Reward를 어떤 의미로 사용할 것인가
-- 수동 보상이 있다면 앱 범위와 분리할 것인가
-
-## D-002 Proof 입력 방식
-
-### 대안
-
-- A: 앱 내부 카메라 촬영만 허용
-- B: 카메라와 이미지 업로드를 Mission별로 허용
-- C: 이미지 외 문서, URL과 외부 연동까지 허용
-
-### 추천
-
-B를 추천한다. 솔로프리너의 결과물이 코드, 와이어프레임과 문서인 점을 반영하면서 C의 보안·처리 복잡성을 피한다. 촬영만 강제해 조작을 줄이는 이점은 일부 포기한다.
-
-### PO가 결정할 내용
-
-- 스크린샷을 Proof로 인정하는가
-- Mission마다 허용 형식을 다르게 할 것인가
-- 한 Mission에 허용할 이미지 수와 크기
-
-## D-003 Proof 검수 방식
-
-### 대안
-
-- A: 제출 즉시 승인
-- B: Operator 수동 승인
-- C: AI 보조 후 Operator 승인
-- D: AI 단독 승인
-
-### 추천
-
-B를 추천한다. 초기에는 학습된 판정 자료가 없고 Score와 Reward Eligibility가 Proof 정확성에 의존한다. 운영 부담을 감수하되 검수 시간과 인력 한도를 파일럿 규모에 맞춘다. C는 충분한 실제 사례와 정답 데이터가 쌓이면 재검토한다.
-
-### PO가 결정할 내용
-
-- 수동 검수를 운영할 담당자와 처리 목표
-- 승인 전 Score와 Ranking을 사용자에게 어떻게 표시할지
-- 반려 사유와 재제출 횟수
-
-## D-004 Deadline과 기준 시간대
-
-### 대안
-
-- A: Challenge 하나의 기준 시간대와 매일 23:59
-- B: Participant별 시간대와 마감
-- C: Mission 공개 후 24시간
-
-### 추천
-
-A를 추천한다. 같은 Challenge의 공정성과 운영 단순성을 우선한다. 해외 사용자를 지원할 때 B 또는 C를 재검토한다.
-
-### PO가 결정할 내용
-
-- 첫 Challenge 기준 시간대
-- 23:59의 초·밀리초 경계
-- 장애가 발생했을 때 마감 연장 권한과 공지 방식
-
-## D-005와 D-006 Score 정책
-
-### 대안
-
-- A: 모든 Mission 100점, 시간 배율 적용
-- B: Mission 난이도별 점수, 시간 배율 적용
-- C: 완료 횟수만 계산
-
-### 추천
-
-A를 추천한다. 사용자 설명, 콘텐츠 운영과 Ranking 검증이 단순하다. 난이도 차이를 표현하는 이점은 포기하며 Mission 설계로 부담을 조정한다.
-
-추천 scoreRate는 다음과 같다.
+P0의 목적은 Camera Proof 제출, Score와 Ranking의 기본 제품 루프를 검증하는 것이다.
 
 ```text
-승인된 finalScore 합계 ÷ Challenge 전체 Mission의 baseScore 합계
+앱 내 Camera Capture
+→ 인증·소유권·시간·이미지 형식·크기·중복·저장 기술 검증
+→ capture_auto_accept
+→ Score Event 한 번 생성
 ```
 
-### PO가 결정할 내용
+- 사진첩, Screenshot과 일반 파일 선택 UI 또는 API를 제공하지 않는다.
+- `accepted`는 촬영 경로와 기술 정책을 충족했다는 뜻이며 Mission 수행 진위의 승인이 아니다.
+- P0에서는 AI와 Operator가 사진 내용을 판정하지 않는다.
+- 신고나 기술 오류는 Operator가 원본 이력을 지우지 않고 보정한다.
+- 정식 서비스에서는 별도 결정 후 `pending_ai_review → accepted/rejected`를 도입하고 AI 승인 뒤 Score를 만든다.
+- AI 전환 전에 공급자, 입력 데이터, 보존, 오탐·미탐, 이의제기, 사람 대체와 장애 시 행동을 승인한다.
 
-- 미공개 또는 운영 취소 Mission을 분모에서 제외하는가
-- 반려 후 재제출 시 최초 제출 시각과 승인 제출 시각 중 무엇을 사용하는가
-- 운영 장애로 기한을 연장할 때 이미 계산된 Score를 어떻게 다룰 것인가
+웹 Camera Capture는 W3C Media Capture and Streams의 `getUserMedia()` 계열 API를 사용한다. 이 통제는 앱에 사진첩·파일 선택 경로를 제공하지 않는다는 뜻이며 촬영 대상 자체가 조작되지 않았음을 보장하지 않는다.
 
-## D-007과 D-008 참가와 Pivot
+### Mission, Score와 Reward Eligibility
 
-### 추천
+- 각 Mission은 해당 Day의 00:00 KST에 해금되고 다시 잠기지 않는다.
+- `proofCloseAt`은 Day 31 종료 후 72시간이다.
+- Score는 baseScore 100에 제출 지연 배율을 적용한다.
+- P0는 유효 Camera Proof 저장 직후 Score를 표시한다.
+- Reward Eligibility는 Ranking과 무관하게 `scoreRate >= 0.85 AND mvpSubmitted = true`로 판정한다.
+- Final Submission은 HTTPS URL 형식과 필수 입력의 저장을 확인하며 P0에서 내용이나 사업 성공 여부를 판정하지 않는다.
 
-- 첫 코호트는 Challenge 시작 후 신규 참가를 받지 않는다.
-- 미수행만으로 자동 탈락시키지 않고 active 상태를 유지한다.
-- 사용자는 자발적으로 withdrawn 상태로 전환할 수 있다.
-- Project Pivot은 VALIDATE 시작 전 1회 허용하고 이전 값을 보존한다.
+### Ranking Snapshot
 
-위 정책은 운영과 분석을 단순하게 하지만 늦게 알게 된 사용자를 받지 못한다. 다음 코호트 대기 등록으로 보완할 수 있다.
+- Participant의 누적 Score는 제출 직후 갱신한다.
+- Ranking은 매일 00:00 KST까지의 확정 Score를 기준으로 00:05에 Snapshot을 만든다.
+- 완전 동점에는 공동 순위를 사용한다.
+- Snapshot 실패 시 이전 결과와 마지막 갱신시각을 유지하고 중복 없이 재실행한다.
 
-## D-011부터 D-016 기술과 운영 기반
+### Mission 콘텐츠 분리
 
-### 현재 확인된 사실
+Mission의 id, day, phase, 공개시각, 종료시각, baseScore와 정책 버전을 구조로 먼저 구현한다. 개발 중 샘플 Mission으로 흐름을 검증할 수 있지만 실제 코호트 시작 전에는 31개 모두 제목, 목적, 가이드, 완료 기준, 예시와 예상 시간을 검수하고 버전을 잠근다.
 
-- 저장소에는 애플리케이션 코드와 확정된 기술 스택이 없다.
-- 인증, DB, 파일 저장소와 배포 SaaS는 핵심 의존성으로 Level 3다.
-- Proof는 사용자 생성 파일이므로 권한, 파일 검증, 보존, 삭제와 부분 실패가 핵심 위험이다.
+## 승인 범위와 조건
 
-### Sprint 0에서 비교할 대안
-
-- Web PWA와 Native App
-- 관리형 Backend 서비스와 직접 구성한 Backend
-- 관리형 Auth와 자체 Auth
-- 하나의 통합 공급자와 분리된 DB·Auth·Storage 공급자
-
-### 평가 기준
-
-- 4인 팀의 학습과 운영 부담
-- 보안 기본값과 권한 표현력
-- DB migration과 로컬·스테이징 검증 가능성
-- 파일 접근 제어와 삭제·복구
-- 공급자 장애와 교체 비용
-- 예상 사용자 규모, 비용과 관측 가능성
-- CI, Preview와 운영 배포의 재현성
-
-승인 전에는 특정 SaaS 계정이나 운영 스키마를 만들지 않는다.
+- 재확인자: PO (@ths4114-cloud)
+- 최초 정책 기록일: 2026-09-12 (`a0dd286`)
+- 확인 가능한 PO 재확인일: 2026-09-17 ([Issue #4](https://github.com/ths4114-cloud/PROOVIT/issues/4))
+- 재확인 범위: D-001부터 D-020의 P0 제품·기술 방향
+- 명시적 변경: D-002는 Camera 전용, D-003은 P0 자동 인정, D-009는 일 1회 Ranking
+- 후속 개정: D-011의 Participant 인증은 2026-09-17 PO 승인으로 Google OAuth 전용으로 변경했다. 이메일 OTP는 P0에서 제외하며 Operator TOTP MFA 원칙은 유지한다.
+- 후속 의무: 정식 서비스 AI Monitoring은 이번 승인에 포함되지 않으며 별도 Level 3 결정이 필요하다.
+- 조건부 항목: 기술 서비스 결제, 개인정보 최종 문구와 운영 출시 승인은 이번 승인에 포함되지 않는다.
 
 ## 참조 기록
 
 | 자료 | 확인일 | 채택할 점 | 현재 채택하지 않을 점 |
 | --- | --- | --- | --- |
-| [OWASP ASVS 5.0.0](https://owasp.org/www-project-application-security-verification-standard/) | 2026-09-12 | 웹 보안 요구사항과 검증 항목의 기준 후보 | 모든 항목을 위험 분석 없이 동일 적용하지 않음 |
-| [OWASP File Upload Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/File_Upload_Cheat_Sheet.html) | 2026-09-12 | 허용 목록, 실제 유형, 크기, 생성 파일명, 비공개 저장과 권한 | 초기부터 모든 고비용 스캔 도구를 도입하지 않음 |
-| [OWASP Authentication Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html) | 2026-09-12 | 안전한 인증 오류, 세션, 계정 복구와 모니터링 검토 | 인증을 직접 구현하라는 근거로 사용하지 않음 |
-| [WCAG 2.2](https://www.w3.org/TR/wcag/) | 2026-09-12 | AA를 접근성 목표 후보로 사용 | 자동 검사만으로 준수했다고 판정하지 않음 |
+| [W3C Media Capture and Streams](https://www.w3.org/TR/mediacapture-streams/) | 2026-09-12 | 앱 내 Camera 권한과 Stream Capture 기반 | Camera 경로가 사진 내용의 진위를 보장한다는 주장 |
+| [OWASP ASVS 5.0.0](https://owasp.org/www-project-application-security-verification-standard/) | 2026-09-12 | 웹 보안 요구사항과 검증 기준 후보 | 모든 항목의 무차별 적용 |
+| [OWASP File Upload Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/File_Upload_Cheat_Sheet.html) | 2026-09-12 | 실제 파일 유형, 크기, 생성 파일명, 비공개 저장과 권한 | Camera 경로만으로 파일 검증 생략 |
+| [Supabase RLS](https://supabase.com/docs/guides/database/postgres/row-level-security) | 2026-09-12 | Auth와 DB 권한의 이중 보호 | RLS만으로 서버 검증 대체 |
+| [Supabase Storage Access Control](https://supabase.com/docs/guides/storage/security/access-control) | 2026-09-12 | Private Storage와 객체 접근 정책 | 공개 Proof URL |
+| [Next.js PWA Guide](https://nextjs.org/docs/app/guides/progressive-web-apps) | 2026-09-12 | 하나의 웹 코드베이스와 PWA 기반 | Native App을 함께 개발 |
+| [WCAG 2.2](https://www.w3.org/TR/wcag/) | 2026-09-12 | AA 접근성 목표 후보 | 자동 검사만으로 준수 판정 |
 
-## 승인 기록
+## 구현 전 남은 문서
 
-현재 승인된 Level 3 결정은 없다. PO가 항목을 승인하면 다음을 수행한다.
-
-1. `docs/decisions/YYYY-MM-DD-결정명.md`에 Engineering Decision을 작성한다.
-2. 결정자, 날짜, 범위와 근거를 기록한다.
-3. PRD, User Flow와 Acceptance Criteria를 갱신한다.
-4. 관련 Issue가 [Definition of Ready](../DEFINITION_OF_READY.md)를 통과하는지 확인한다.
+승인으로 제품 정책은 닫혔지만 구현은 아직 [Definition of Ready](../DEFINITION_OF_READY.md)를 통과하지 않았다. Architecture, Database, API, Security, Test Strategy, Wireframe과 Vertical Slice Issue를 작성하고 조건부 결정의 검증 방법을 연결해야 한다.
