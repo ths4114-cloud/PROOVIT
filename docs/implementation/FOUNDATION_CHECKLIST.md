@@ -1,6 +1,6 @@
 # 공통 기반 마무리 체크리스트
 
-기준일: 2026-09-15  
+기준일: 2026-09-15
 대상 브랜치: `codex/app-foundation`
 
 ## 이번 커밋에 포함할 항목
@@ -42,7 +42,7 @@
 - `npm run test:e2e`: 1차 실행에서 Next.js not-found 응답의 상태 코드와 route announcer의 중복 role을 확인해 테스트를 보완했다. 최종 실행 결과는 커밋 전 다시 기록한다.
 - 실제 Google 로그인: Supabase/Google 외부 설정 전이므로 미검증.
 - 실제 DB/RLS/Storage/Camera/Score: 구현 범위 밖이며 미검증.
-- GitHub `CI / verify`: 최신 커밋 `3fbd917`에서 통과.
+- GitHub `CI / verify`: [PR #2의 최신 커밋 Checks](https://github.com/ths4114-cloud/PROOVIT/pull/2/checks)에서 대상 커밋과 실행 결과를 확인한다.
 
 ## 사람 리뷰 인계
 

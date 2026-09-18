@@ -3,7 +3,8 @@
 - 문서 상태: P0 정책 Accepted
 - 최종 수정일: 2026-09-17
 - 결정자: PO
-- 승인일: 2026-09-12
+- 최초 정책 기록일: 2026-09-12 (`a0dd286`)
+- 확인 가능한 PO 재확인일: 2026-09-17
 - 승인 근거: [GitHub Issue #4 — P0 정책 승인 범위 및 Participant 인증 개정 기록](https://github.com/ths4114-cloud/PROOVIT/issues/4)
 - 관련 문서: [PRD](../product/PRD.md), [User Flows](../product/USER_FLOWS.md), [Sprint 0 계획](SPRINT_0_PLAN.md)
 
@@ -86,9 +87,10 @@ Mission의 id, day, phase, 공개시각, 종료시각, baseScore와 정책 버�
 
 ## 승인 범위와 조건
 
-- 승인자: PO
-- 승인일: 2026-09-12
-- 승인 범위: D-001부터 D-020의 P0 제품·기술 방향
+- 재확인자: PO (@ths4114-cloud)
+- 최초 정책 기록일: 2026-09-12 (`a0dd286`)
+- 확인 가능한 PO 재확인일: 2026-09-17 ([Issue #4](https://github.com/ths4114-cloud/PROOVIT/issues/4))
+- 재확인 범위: D-001부터 D-020의 P0 제품·기술 방향
 - 명시적 변경: D-002는 Camera 전용, D-003은 P0 자동 인정, D-009는 일 1회 Ranking
 - 후속 개정: D-011의 Participant 인증은 2026-09-17 PO 승인으로 Google OAuth 전용으로 변경했다. 이메일 OTP는 P0에서 제외하며 Operator TOTP MFA 원칙은 유지한다.
 - 후속 의무: 정식 서비스 AI Monitoring은 이번 승인에 포함되지 않으며 별도 Level 3 결정이 필요하다.

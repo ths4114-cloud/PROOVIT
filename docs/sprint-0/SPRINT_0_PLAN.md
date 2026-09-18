@@ -274,7 +274,7 @@ Sprint 0는 코드를 많이 만드는 기간이 아니다. 제품 정책, 사�
 - User Flow: P0 정책 반영, Wireframe 검토 전
 - Glossary: P0 정책 반영
 - Decision Register: D-001부터 D-020 Accepted, 일부 출시 전 검증 조건 유지
-- PO 승인: 2026-09-12 기록 완료
+- PO 승인 근거: 2026-09-12 정책 기록(`a0dd286`)의 범위를 PO가 2026-09-17 [Issue #4](https://github.com/ths4114-cloud/PROOVIT/issues/4)에서 사후 재확인
 - 애플리케이션 FOUNDATION: PR #2 구현 완료, 사람 재검토 중
 - 화면 골격: 7개 모바일 화면과 공통 UI 미리보기 구현
 - Architecture, Database: 실제 도메인 구현 전 계약과 보안 검토 필요

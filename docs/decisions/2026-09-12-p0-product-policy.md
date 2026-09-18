@@ -1,10 +1,10 @@
 # ED-2026-09-12 — P0 Mission·Proof·Score·Ranking 정책
 
 - 상태: Accepted
-- 날짜: 2026-09-12
+- 최초 정책 기록일: 2026-09-12 (`a0dd286`)
 - 작성자 / Feature Owner: Codex / PO
 - 결정 수준: Level 3
-- 결정자 / 승인 날짜 / 승인 근거: PO / 2026-09-12 / 현재 Codex 작업의 Camera 전용·P0 자동 점수·일 1회 Ranking 승인 메시지
+- 결정자 / 확인 가능한 PO 재확인일 / 근거: PO / 2026-09-17 / [Issue #4](https://github.com/ths4114-cloud/PROOVIT/issues/4)에서 2026-09-12 기록된 P0 정책 범위를 사후 재확인
 - 관련 Issue / PR / 공식 문서: [PRD](../product/PRD.md), [User Flows](../product/USER_FLOWS.md), [Decision Register](../sprint-0/DECISION_REGISTER.md)
 - 이전 결정 / 대체 결정: 기존 Proposed 수동 검수안을 대체
 - 구현 상태: 미착수

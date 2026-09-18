@@ -1,10 +1,10 @@
 # ED-2026-09-12 — P0 기술·보안·운영 기반
 
 - 상태: Accepted
-- 날짜: 2026-09-12
+- 최초 정책 기록일: 2026-09-12 (`a0dd286`)
 - 작성자 / Feature Owner: Codex / PO
 - 결정 수준: Level 3
-- 결정자 / 승인 날짜 / 승인 근거: PO / 2026-09-12 / P0 최종 권고안 승인 메시지
+- 결정자 / 확인 가능한 PO 재확인일 / 근거: PO / 2026-09-17 / [Issue #4](https://github.com/ths4114-cloud/PROOVIT/issues/4)에서 2026-09-12 기록된 P0 정책 범위를 사후 재확인
 - 관련 Issue / PR / 공식 문서: [PRD](../product/PRD.md), [Decision Register](../sprint-0/DECISION_REGISTER.md)
 - 이전 결정 / 대체 결정: 없음
 - 구현 상태: 공통 애플리케이션 기반은 PR #2에서 구현·리뷰 중. 실제 Supabase 프로젝트 설정, DB/RLS/Private Storage와 도메인 기능은 미착수
@@ -27,7 +27,7 @@ P0는 Next.js TypeScript PWA, Vercel, Supabase Postgres/Auth/Private Storage를 
 ## 3. Trade-off & Variables
 
 - 충돌하는 가치: 빠른 개발·낮은 운영 부담과 공급자 종속·복구 통제
-- Risk: 잘못된 RLS, 서비스 키 노출, Storage 객체 복구 공백, 이메일 전달 실패
+- Risk: 잘못된 RLS, 서비스 키 노출, Storage 객체 복구 공백, Google OAuth 제공자 설정·로그인 장애
 - Change: AI Monitoring, 알림과 규모 증가 가능성
 - Scale: 456명 × 31일, 자정 전후 동시 제출 가능
 - Uncertainty: 실제 이미지 크기, 동시성, 요금제, 데이터 처리 지역과 사용자 기기 분포
