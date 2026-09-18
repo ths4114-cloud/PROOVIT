@@ -13,7 +13,7 @@ test('mobile mission flow uses the same mission and never submits a proof', asyn
   await expect(page.getByRole('heading', { name: '완료 기준' })).toBeVisible();
   await page.getByRole('link', { name: '카메라 인증 화면 보기' }).click();
   await expect(page.getByRole('heading', { name: '카메라 인증' })).toBeVisible();
-  await expect(page.getByRole('button', { name: '카메라 연결 준비 중' })).toBeDisabled();
+  await expect(page.getByRole('button', { name: '카메라 시작하기' })).toBeEnabled();
   await page.getByRole('link', { name: '점수 결과 예시 보기' }).click();
   await expect(page.getByRole('heading', { name: '인증 완료' })).toBeVisible();
   await page.getByRole('link', { name: '31일 보드 보기' }).click();
