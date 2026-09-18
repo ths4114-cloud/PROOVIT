@@ -16,7 +16,7 @@
 - [x] 환경변수 예시와 비밀값 차단 기준
 - [x] CI, 타입 검사, lint, format, build, 모바일 E2E smoke 테스트
 - [x] 개발·브랜치·역할 인계 문서
-- [x] Git 커밋·push: `codex/app-foundation`에 반영 (`7021191`, 인증 정책 정리 `410fff3`, 승인 근거 연결 `3fbd917`)
+- [x] Git 커밋·push: `codex/app-foundation`에 반영 (`7021191`, 인증 정책 정리 `410fff3`, 승인 근거 연결 `3fbd917`, 날짜·근거 정정 `1d86da0`)
 
 ## 커밋 전 확인할 결정
 
@@ -46,7 +46,7 @@
 
 ## 사람 리뷰 인계
 
-사람 Reviewer는 다음을 확인한 뒤 PR을 승인한다. 2026-09-17 현재 `leejidev`, `zoohopi`, `dadaroo247-web`에게 리뷰를 요청했으며, `leejidev`의 1차 변경 요청을 반영하고 재검토를 요청한 상태다. 사람 승인은 아직 완료되지 않았다.
+사람 Reviewer는 다음 항목을 검토한다. `leejidev`, `zoohopi`, `dadaroo247-web`에게 리뷰를 요청했고, `leejidev`의 1차 변경 요청과 후속 최종 검토 의견을 반영했다. 2026-09-18 팀 회의에서 Foundation 수정 사항을 구두로 확인했으며, PO는 PR #2에 한해 별도 GitHub `Approve`를 병합 필수 조건으로 두지 않기로 결정했다. 적용 조건과 종료 시점은 [Foundation PR 병합 Gate 예외](../decisions/2026-09-18-foundation-merge-gate-exception.md)를 따른다.
 
 1. `npm ci` 후 `ENABLE_UI_PREVIEW=true`로 `/preview/home`의 전체 이동 흐름을 확인한다.
 2. `src/lib/contracts.ts`와 `src/lib/routes.ts` 변경이 A·B 작업의 공통 약속과 맞는지 확인한다.
@@ -55,4 +55,4 @@
 5. 기획안의 AI·상금·실시간 랭킹을 P0 기능으로 끌어오지 않았는지 확인한다.
 6. 수정이 필요한 경우 파일과 줄, 사용자 영향, 최소 수정안을 PR에 기록한다.
 
-이 체크리스트의 통과는 사람 리뷰·CI·`main` 병합을 대신하지 않는다.
+이 체크리스트는 리뷰 내용이나 CI를 대신하지 않는다. PR #2는 독립 Reviewer 피드백 반영, 최신 필수 CI 통과, 충돌 없음과 PO의 회의 확인 기록을 모두 확인한 뒤 병합한다. 이 예외는 후속 PR에 적용되지 않는다.
