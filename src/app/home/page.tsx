@@ -28,7 +28,7 @@ export default async function Home({
         챌린지 참가와 오늘의 미션 연결을 준비하고 있어요. 아직 챌린지 참가가 등록되지는 않았습니다.
       </StateNotice>
       {error === 'signout' && (
-        <p role="alert" className="text-sm text-pink-300">
+        <p role="alert" className="text-sm text-accent">
           로그아웃하지 못했어요. 다시 시도해주세요.
         </p>
       )}
