@@ -19,7 +19,7 @@ export default async function Detail({ params }: { params: Promise<{ missionId: 
         <ol className="mt-4 space-y-4">
           {m.steps.map((step, i) => (
             <li key={step} className="flex gap-3 text-sm leading-7">
-              <span className="text-pink-400">0{i + 1}</span>
+              <span className="text-accent">0{i + 1}</span>
               {step}
             </li>
           ))}

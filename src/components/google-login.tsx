@@ -13,7 +13,7 @@ export function GoogleLogin({ enabled }: { enabled: boolean }) {
         {pending ? '로그인 연결 중…' : 'Google로 계속하기'}
       </Button>
       {state.error && (
-        <p role="alert" className="text-sm leading-6 text-pink-300">
+        <p role="alert" className="text-sm leading-6 text-accent">
           {state.error}
         </p>
       )}

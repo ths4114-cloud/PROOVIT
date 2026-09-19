@@ -13,7 +13,7 @@ export default async function Login({
   return (
     <AppShell>
       <div className="py-10">
-        <p className="mb-4 text-xs font-bold tracking-[.2em] text-pink-400">PROVE YOUR NEXT STEP</p>
+        <p className="mb-4 text-xs font-bold tracking-[.2em] text-accent">PROVE YOUR NEXT STEP</p>
         <h1 className="text-4xl leading-tight font-black">
           실행할 준비,
           <br />
@@ -26,7 +26,7 @@ export default async function Login({
         </p>
       </div>
       {error && (
-        <p role="alert" className="rounded-2xl border border-accent/40 p-4 text-sm text-pink-200">
+        <p role="alert" className="rounded-2xl border border-accent/40 p-4 text-sm text-accent">
           로그인을 완료하지 못했어요. 취소했거나 연결 시간이 지났을 수 있어요. 다시 시도해주세요.
         </p>
       )}
