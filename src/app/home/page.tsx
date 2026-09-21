@@ -117,6 +117,12 @@ export default async function HomePage() {
             </summary>
             <p className="mt-2 leading-6 text-muted">{mission.guide}</p>
           </details>
+          <Link
+            href={`/missions/${mission.id}`}
+            className="mt-5 inline-flex min-h-12 items-center font-bold text-accent"
+          >
+            미션 상세 보기 →
+          </Link>
         </Card>
       ) : (
         <Card>

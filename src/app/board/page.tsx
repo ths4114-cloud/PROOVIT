@@ -1,30 +1,48 @@
-import { AppShell } from '@/components/app-shell';
-import { ActionLink, StateNotice } from '@/components/ui';
+import Link from 'next/link';
 import { redirect } from 'next/navigation';
-import { getSupabaseConfig } from '@/lib/env';
+import { AppShell } from '@/components/app-shell';
+import { StateNotice } from '@/components/ui';
 import { getContext } from '@/lib/data';
+import { getSupabaseConfig } from '@/lib/env';
+import { getBoard } from '@/lib/missions/queries';
+import { missionLabels } from '@/lib/contracts';
 
-/**
- * 실제(로그인 사용자별) 31일 미션보드 화면.
- * 실제 미션 목록 조회 API는 아직 없어 준비 중 안내만 제공합니다(후속 통합 과제).
- * 참가·인증 화면 통일감을 위해 하단 네비는 5개 자리를 항상 유지합니다.
- */
 export const dynamic = 'force-dynamic';
-
 export default async function BoardPage() {
   if (!getSupabaseConfig()) redirect('/');
-  const { user } = await getContext();
-  if (!user) redirect('/login');
-
+  if (!(await getContext()).user) redirect('/login');
+  const board = await getBoard();
+  if (!board) redirect('/');
   return (
     <AppShell authenticated>
-      <StateNotice title="미션보드 연결 준비 중">
-        나의 31일 진행 현황을 한눈에 보는 화면은 곧 연결됩니다. 지금은 콘텐츠 구성을{' '}
-        <code className="text-accent">/preview/board</code>에서 먼저 확인하실 수 있어요.
+      <h1 className="font-display text-3xl font-bold">31일 미션보드</h1>
+      <p>{board.title}</p>
+      <div className="grid grid-cols-3 gap-3">
+        {board.missions.map((m) =>
+          m.id ? (
+            <Link
+              key={m.day}
+              href={`/missions/${m.id}`}
+              aria-label={`${m.day}일차 ${missionLabels[m.status]}`}
+              className="flex min-h-24 flex-col justify-center rounded-2xl border border-line p-3 text-center"
+            >
+              <span className="font-bold">DAY {m.day}</span>
+              <span className="text-xs text-muted">{missionLabels[m.status]}</span>
+            </Link>
+          ) : (
+            <div
+              key={m.day}
+              className="flex min-h-24 flex-col justify-center rounded-2xl border border-line p-3 text-center text-muted"
+            >
+              <span>DAY {m.day}</span>
+              <span className="text-xs">{m.status === 'locked' ? '해금 전' : '준비 중'}</span>
+            </div>
+          ),
+        )}
+      </div>
+      <StateNotice title="서버 시간 기준">
+        매일 자정에 미션이 열립니다. 제출 가능 여부와 점수는 서버에서 확인합니다.
       </StateNotice>
-      <ActionLink href="/home" className="w-full !bg-panel">
-        홈으로 돌아가기
-      </ActionLink>
     </AppShell>
   );
 }
