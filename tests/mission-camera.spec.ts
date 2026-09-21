@@ -1,14 +1,19 @@
 import { expect, test, type Page } from '@playwright/test';
 
-async function installFakeCamera(page: Page) {
+async function installFakeCamera(page: Page, failFirstAttempt = false) {
   let stopCount = 0;
   await page.exposeFunction('__recordCameraStop', () => {
     stopCount += 1;
   });
-  await page.addInitScript(() => {
+  await page.addInitScript((failFirstAttempt) => {
+    let shouldFail = failFirstAttempt;
     Object.defineProperty(navigator.mediaDevices, 'getUserMedia', {
       configurable: true,
       value: async () => {
+        if (shouldFail) {
+          shouldFail = false;
+          throw new Error('Unexpected camera failure for test.');
+        }
         const canvas = document.createElement('canvas');
         canvas.width = 480;
         canvas.height = 640;
@@ -27,7 +32,7 @@ async function installFakeCamera(page: Page) {
         return stream;
       },
     });
-  });
+  }, failFirstAttempt);
   return () => stopCount;
 }
 
@@ -114,6 +119,17 @@ test('explains an unavailable camera and allows an in-app retry', async ({ page 
     page.getByRole('alert').filter({ hasText: '사용할 수 있는 카메라를 찾지 못했어요.' }),
   ).toBeVisible();
   await expect(page.getByRole('button', { name: '카메라 다시 시도하기' })).toBeEnabled();
+});
+
+test('recovers from an unexpected camera error through retry', async ({ page }) => {
+  await installFakeCamera(page, true);
+  await page.goto('/preview/missions/day-12/camera');
+  await page.getByRole('button', { name: '카메라 시작하기' }).click();
+  await expect(
+    page.getByRole('alert').filter({ hasText: '카메라를 시작하지 못했어요.' }),
+  ).toBeVisible();
+  await page.getByRole('button', { name: '카메라 다시 시도하기' }).click();
+  await expect(page.getByRole('button', { name: '사진 촬영하기' })).toBeEnabled();
 });
 
 declare global {
