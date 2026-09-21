@@ -53,7 +53,10 @@ function getCameraErrorStatus(error: unknown): CameraCaptureStatus {
   return 'error';
 }
 
-export function CameraCapture({ missionId }: { missionId?: string }) {
+type CameraCaptureProps =
+  { missionId?: string; onDemoSubmit?: never } | { missionId?: never; onDemoSubmit: () => void };
+
+export function CameraCapture({ missionId, onDemoSubmit }: CameraCaptureProps) {
   const router = useRouter();
   const [submitting, setSubmitting] = useState(false);
   const [submissionError, setSubmissionError] = useState('');
@@ -181,6 +184,11 @@ export function CameraCapture({ missionId }: { missionId?: string }) {
   }
 
   async function submitPhoto() {
+    if (onDemoSubmit && photoRef.current) {
+      onDemoSubmit();
+      clearCapturedPhoto();
+      return;
+    }
     if (!missionId || !photoRef.current || requestRef.current) return;
     if (photoRef.current.size > 4 * 1024 * 1024) {
       setSubmissionError('사진이 너무 큽니다. 다시 촬영해 주세요.');
@@ -283,8 +291,18 @@ export function CameraCapture({ missionId }: { missionId?: string }) {
           <Button className="w-full !bg-panel" onClick={retakePhoto} disabled={submitting}>
             다시 촬영하기
           </Button>
-          <Button className="w-full" disabled={!missionId || submitting} onClick={submitPhoto}>
-            {!missionId ? '제출 기능 연결 전' : submitting ? '제출 중…' : '인증 사진 제출하기'}
+          <Button
+            className="w-full"
+            disabled={(!missionId && !onDemoSubmit) || submitting}
+            onClick={submitPhoto}
+          >
+            {onDemoSubmit
+              ? '데모 제출하기'
+              : !missionId
+                ? '제출 기능 연결 전'
+                : submitting
+                  ? '제출 중…'
+                  : '인증 사진 제출하기'}
           </Button>
         </div>
       ) : (
