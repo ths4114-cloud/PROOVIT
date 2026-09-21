@@ -35,6 +35,12 @@
 
 ## 실제 기기 출시 전 검증
 
+### 2026-09-21 추가 수명주기 회귀
+
+- 앱 변경 없이 테스트 3건 추가: 권한 대기 중 이탈 후 뒤늦게 받은 stream 종료, 이미지 인코딩 실패 시 stream 종료, 재촬영/이탈 시 Blob URL 해제.
+- 전체 E2E: 12 passed (6.7s), exit 0, Windows 제한 밖 실행. 가상 카메라 Chromium.
+- 실제 기기 미실행. 준비 조건과 빠른 확인 절차는 `MISSION_PROOF_INTEGRATION_READINESS.md` 참고.
+
 아래 항목은 실제 기기와 HTTPS Preview 환경이 필요하므로 자동화 결과와 구분해 기록한다.
 
 ### iOS Safari 최신 2개 주요 버전

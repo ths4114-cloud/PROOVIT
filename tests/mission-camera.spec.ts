@@ -135,5 +135,74 @@ test('recovers from an unexpected camera error through retry', async ({ page }) 
 declare global {
   interface Window {
     __recordCameraStop(): Promise<void>;
+    __resolveCameraPermission(): void;
   }
 }
+
+test('stops a stream granted after leaving the camera screen', async ({ page }) => {
+  const getStopCount = await installFakeCamera(page);
+  await page.goto('/preview/missions/day-12/camera');
+  await page.evaluate(() => {
+    const original = navigator.mediaDevices.getUserMedia.bind(navigator.mediaDevices);
+    Object.defineProperty(navigator.mediaDevices, 'getUserMedia', {
+      configurable: true,
+      value: async (constraints: MediaStreamConstraints) => {
+        await new Promise<void>((resolve) => {
+          window.__resolveCameraPermission = resolve;
+        });
+        return original(constraints);
+      },
+    });
+  });
+  await page.getByRole('button', { name: '카메라 시작하기' }).click();
+  await expect(page.getByRole('button', { name: '권한 확인 중…' })).toBeDisabled();
+  await page.getByRole('link', { name: '홈', exact: true }).click();
+  await expect(page).toHaveURL(/\/preview\/home$/);
+  await page.evaluate(() => window.__resolveCameraPermission());
+  await expect.poll(getStopCount).toBe(1);
+});
+
+test('releases the stream when image encoding fails', async ({ page }) => {
+  const getStopCount = await installFakeCamera(page);
+  await page.goto('/preview/missions/day-12/camera');
+  await page.evaluate(() => {
+    HTMLCanvasElement.prototype.toBlob = function (callback) {
+      callback(null);
+    };
+  });
+  await page.getByRole('button', { name: '카메라 시작하기' }).click();
+  await page.getByRole('button', { name: '사진 촬영하기' }).click();
+  await expect(page.getByRole('button', { name: '카메라 다시 시도하기' })).toBeEnabled();
+  await expect(page.getByAltText('촬영한 인증 사진 미리보기')).toHaveCount(0);
+  await expect.poll(getStopCount).toBe(1);
+});
+
+test('revokes captured image URLs on retake and navigation', async ({ page }) => {
+  await installFakeCamera(page);
+  const revoked: string[] = [];
+  await page.exposeFunction('__recordRevokedUrl', (url: string) => revoked.push(url));
+  await page.goto('/preview/missions/day-12/camera');
+  await page.evaluate(() => {
+    const original = URL.revokeObjectURL.bind(URL);
+    URL.revokeObjectURL = (url) => {
+      void (
+        window as unknown as { __recordRevokedUrl(url: string): Promise<void> }
+      ).__recordRevokedUrl(url);
+      original(url);
+    };
+  });
+  await page.getByRole('button', { name: '카메라 시작하기' }).click();
+  await page.getByRole('button', { name: '사진 촬영하기' }).click();
+  const preview = page.getByAltText('촬영한 인증 사진 미리보기');
+  await expect(preview).toBeVisible();
+  const firstUrl = await preview.getAttribute('src');
+  await page.getByRole('button', { name: '다시 촬영하기' }).click();
+  await expect.poll(() => revoked).toContain(firstUrl);
+  await page.getByRole('button', { name: '사진 촬영하기' }).click();
+  await expect(preview).toBeVisible();
+  const secondUrl = await preview.getAttribute('src');
+  expect(secondUrl).not.toBe(firstUrl);
+  await page.getByRole('link', { name: '홈', exact: true }).click();
+  await expect(page).toHaveURL(/\/preview\/home$/);
+  await expect.poll(() => revoked).toContain(secondUrl);
+});
