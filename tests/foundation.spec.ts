@@ -7,7 +7,7 @@ test('mobile mission flow uses the same mission and never submits a proof', asyn
   await page.getByRole('link', { name: '미션 시작하기' }).click();
   await expect(page).toHaveURL(/\/preview\/missions\/day-12$/);
   await expect(
-    page.getByRole('heading', { name: '두 번째 고객에게 같은 문제를 확인하세요' }),
+    page.getByRole('heading', { name: '더 많은 고객에게 의견을 확인해보세요' }),
   ).toBeVisible();
   await expect(page.getByRole('heading', { name: '오늘의 제출' })).toBeVisible();
   await expect(page.getByRole('heading', { name: '완료 기준' })).toBeVisible();
@@ -27,20 +27,21 @@ test('unconfigured authentication fails closed and callbacks cannot redirect ext
   page,
   request,
 }) => {
+  // Supabase가 설정되지 않은 상태에서는 /home이 로그인으로 리다이렉트하는 대신
+  // 그 자리에서 준비중 안내만 보여주고, 참가·점수 등 어떤 보호된 데이터도 내보내지 않는다.
   await page.goto('/home');
-  await expect(page).toHaveURL(/\/login$/);
-  await expect(page.getByRole('button', { name: 'Google로 계속하기' })).toBeDisabled();
+  await expect(page).toHaveURL(/\/home$/);
+  await expect(page.getByRole('heading', { name: '새로운 도전을 준비하고 있어요' })).toBeVisible();
+  await page.goto('/login');
+  await expect(page.getByRole('heading', { name: '로그인 연결 준비 중' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Google로 계속하기' })).toHaveCount(0);
   const response = await request.get('/auth/callback?code=invalid&next=https://evil.example', {
     maxRedirects: 0,
   });
   expect(response.status()).toBe(307);
   expect(response.headers().location).toBe('http://localhost:3000/login?error=callback');
-  await page.goto('/login?error=callback');
-  await expect(
-    page.getByText(
-      '로그인을 완료하지 못했어요. 취소했거나 연결 시간이 지났을 수 있어요. 다시 시도해주세요.',
-    ),
-  ).toBeVisible();
+  // Supabase가 설정되지 않은 동안에는 /login이 "연결 준비 중" 안내를 최우선으로 보여주므로
+  // error=callback 문구 노출 여부는 Supabase가 구성된 환경(participant 설정)에서 검증한다.
 });
 test('unknown missions and locked missions have no capture action', async ({ page }) => {
   await page.goto('/preview/missions/not-a-mission');

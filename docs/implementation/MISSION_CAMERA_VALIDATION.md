@@ -59,7 +59,21 @@
 - Chrome 백그라운드 전환과 복귀 뒤 카메라 상태
 - 촬영, 미리보기, 재촬영과 페이지 이탈 뒤 카메라 표시등 종료
 
-## 제한 및 후속 범위
+## 2026-09-21 PR #9 main 통합 검증
+
+- 입력: 우리 `4522ec0` + 승인·병합된 main `f316014` (PR #9).
+- 목적/AC: 팀원 브랜드·네비·실제 참가 기능을 보존하며 프리뷰 상세/카메라 결합, 기존 제출·완료 기준 및 카메라 회귀 유지. 실제 UUID 조회·사진 제출·Score 지급·운영 변경은 제외.
+- 충돌 해결: data.ts의 중복 콘텐츠 배열을 mission-content.ts 참조로 통일; foundation.spec.ts에서 최신 인증 기대값과 상세/카메라 검증을 모두 보존.
+- Day 12 제목은 승인 후 main에 들어온 '더 많은 고객에게 의견을 확인해보세요' 유지. 상세 제출·완료 기준, Day 18 방향 조정, 개인정보 안내는 기존 구조화 데이터 유지.
+- 팀원 공통 레이아웃·로그인·홈·DB migration은 추가 수정하지 않음. 실제 UUID 카메라 안내 화면은 아직 준비 중이며 프리뷰로 위장 연결하지 않음.
+- npm ci: 성공. npm run check: 성공 (타입/lint/format/DB 단위 7건).
+- npm run build: 샌드박스에서 Google 폰트 다운로드 EACCES 실패; 네트워크 허용 환경에서 성공. 설정·검사 우회 없음.
+- npm run test:e2e: 15 passed (14.8s), exit 0.
+- npm run test:e2e:participant: 10 passed (23.6s), exit 0. 가짜 인증 백엔드/로컬 SQL 테스트이며 운영 Google/Supabase 검증 아님.
+- 추가 모바일 360/390/430px: 중앙 인증 메뉴 → day-12 camera → 촬영 → 재촬영 버튼이 nav 위에 위치함을 검증. 3건 재실행 통과, test-results/camera-integrated-{width}.png 생성.
+- 자체 점검만 수행. 새 통합 커밋의 독립/사람 리뷰, 원격 CI, 실제 갤럭시/아이폰은 별도 Gate. main 병합/배포는 하지 않음.
+
+## 미구현 범위
 
 - 현재 사진은 브라우저 메모리에만 존재하며 새로고침하면 사라진다.
 - Supabase Private Storage 업로드, 실제 파일 형식·크기 검증, Proof 저장, 자동 `accepted`, Score Event 생성은 이 변경 범위가 아니다.

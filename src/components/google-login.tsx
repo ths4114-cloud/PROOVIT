@@ -1,19 +1,24 @@
 'use client';
 import { useActionState } from 'react';
 import { signInWithGoogle } from '@/app/login/actions';
-import { Button } from '@/components/ui';
+import { buttonClass } from '@/components/ui';
+
 export function GoogleLogin({ enabled }: { enabled: boolean }) {
   const [state, action, pending] = useActionState(signInWithGoogle, { error: null });
   return (
     <form action={action} className="space-y-3">
-      <Button type="submit" disabled={!enabled || pending} className="w-full !bg-white !text-black">
-        <span aria-hidden="true" className="text-lg">
+      <button
+        type="submit"
+        disabled={!enabled || pending}
+        className={`${buttonClass} w-full !bg-white !text-[#1c1c1c] hover:!bg-white/90`}
+      >
+        <span aria-hidden="true" className="text-lg font-bold text-[#4285F4]">
           G
         </span>
         {pending ? '로그인 연결 중…' : 'Google로 계속하기'}
-      </Button>
+      </button>
       {state.error && (
-        <p role="alert" className="text-sm leading-6 text-pink-300">
+        <p role="alert" className="text-sm text-accent">
           {state.error}
         </p>
       )}

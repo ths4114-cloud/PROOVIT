@@ -1,21 +1,38 @@
 @import 'tailwindcss';
+@font-face {
+  font-family: 'KMU Sungkok Serif';
+  src: url('/fonts/KMU80SungkokSerif.woff2') format('woff2');
+  font-weight: 400 700;
+  font-display: swap;
+}
 @theme inline {
-  --color-background: #0b0b0e;
-  --color-panel: #151519;
-  --color-line: #303039;
-  --color-muted: #b7b5c1;
-  --color-accent: #ed1763;
-  --color-accent-hover: #c70e50;
-  --font-sans: Arial, 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+  /* 브랜드 톤앤무드: proovit_landing_page_design 기준 (핑크 네온 + 딥다크 + 골드 포인트) */
+  --color-background: #100c0b;
+  --color-panel: #1b1311;
+  --color-panel-raised: #2a1e1c;
+  --color-line: #3a2c28;
+  --color-muted: #a99c97;
+  --color-accent: #ff2e7e;
+  --color-accent-hover: #e0186b;
+  --color-accent-deep: #7a1038;
+  --color-gold: #ffc24d;
+  --color-cream: #f4ede4;
+  --font-sans:
+    'Pretendard Variable', Pretendard, 'Noto Sans KR', 'Malgun Gothic', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', monospace;
+  /* 큰 챕터 제목 전용(히어로 타이틀, 섹션 헤딩). 국민대 KMU80 성곡세리프체 — CC BY-ND,
+     원본 파일 그대로 임베딩만 함(수정 없음). 라이선스: public/fonts/license/README.md */
+  --font-display: 'KMU Sungkok Serif', 'Pretendard Variable', serif;
 }
 :root {
   color-scheme: dark;
 }
 body {
   margin: 0;
-  background: #08080a;
+  background: #0a0706;
   color: #f9f6f8;
-  font-family: Arial, 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+  font-family:
+    'Pretendard Variable', Pretendard, 'Noto Sans KR', 'Malgun Gothic', system-ui, sans-serif;
 }
 button,
 a,
@@ -28,19 +45,25 @@ input {
   touch-action: manipulation;
 }
 :focus-visible {
-  outline: 2px solid #ff6aa0;
+  outline: 2px solid var(--color-accent);
   outline-offset: 4px;
 }
 .nav-link {
   display: flex;
   min-height: 44px;
+  min-width: 56px;
   align-items: center;
-  padding: 0 12px;
-  font-size: 13px;
-  color: #d6d2da;
+  justify-content: center;
+  padding: 4px 8px;
+  border-radius: 14px;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--color-muted);
+  transition: color 0.15s ease;
 }
-.nav-link:hover {
-  color: #ff6aa0;
+.nav-link:hover,
+.nav-link[aria-current='page'] {
+  color: var(--color-accent);
 }
 @media (prefers-reduced-motion: reduce) {
   *,

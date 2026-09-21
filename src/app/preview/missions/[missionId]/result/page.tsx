@@ -9,12 +9,12 @@ export default async function Result({ params }: { params: Promise<{ missionId: 
     <>
       <Badge>결과 화면 예시</Badge>
       <div className="py-8 text-center">
-        <p className="text-5xl text-pink-400" aria-hidden="true">
+        <p className="text-5xl text-accent" aria-hidden="true">
           ✓
         </p>
         <h1 className="mt-5 text-3xl font-black">인증 완료</h1>
         <p className="mt-3 text-sm text-muted">실제 제출·검증이 성공하면 표시할 화면입니다.</p>
-        <p className="mt-7 text-6xl font-black tracking-tighter text-pink-400">
+        <p className="mt-7 text-6xl font-black tracking-tighter text-accent">
           +100<span className="text-xl">점</span>
         </p>
       </div>

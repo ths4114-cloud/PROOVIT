@@ -132,6 +132,30 @@ test('recovers from an unexpected camera error through retry', async ({ page }) 
   await expect(page.getByRole('button', { name: '사진 촬영하기' })).toBeEnabled();
 });
 
+for (const width of [360, 390, 430]) {
+  test(`integrated camera navigation and controls fit at ${width}px`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 844 });
+    await installFakeCamera(page);
+    await page.goto('/preview/home');
+    await page.getByRole('link', { name: '오늘의 미션 카메라 인증' }).click();
+    await expect(page).toHaveURL(/\/preview\/missions\/day-12\/camera$/);
+    await page.getByRole('button', { name: '카메라 시작하기' }).click();
+    await page.getByRole('button', { name: '사진 촬영하기' }).click();
+    const retake = page.getByRole('button', { name: '다시 촬영하기' });
+    await retake.scrollIntoViewIfNeeded();
+    await expect(retake).toBeInViewport();
+    const button = await retake.boundingBox();
+    const nav = await page.getByRole('navigation', { name: '주요 메뉴' }).boundingBox();
+    expect(button).not.toBeNull();
+    expect(nav).not.toBeNull();
+    expect(button!.y + button!.height).toBeLessThanOrEqual(nav!.y);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(
+      width,
+    );
+    await page.screenshot({ path: `test-results/camera-integrated-${width}.png` });
+  });
+}
+
 declare global {
   interface Window {
     __recordCameraStop(): Promise<void>;

@@ -12,14 +12,14 @@ export default async function Detail({ params }: { params: Promise<{ missionId: 
       <Badge>
         DAY {m.day} · {m.phase} · {missionLabels[m.status]}
       </Badge>
-      <h1 className="text-3xl leading-tight font-black">{m.title}</h1>
+      <h1 className="font-display text-3xl leading-tight font-bold">{m.title}</h1>
       <p className="text-sm leading-7 text-muted">{m.description}</p>
       <Card>
         <h2 className="font-bold">이렇게 실행하세요</h2>
         <ol className="mt-4 space-y-4">
           {m.steps.map((step, i) => (
             <li key={step} className="flex gap-3 text-sm leading-7">
-              <span className="text-pink-400">0{i + 1}</span>
+              <span className="text-accent">0{i + 1}</span>
               {step}
             </li>
           ))}

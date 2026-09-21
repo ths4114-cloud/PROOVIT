@@ -196,7 +196,7 @@ export const missionContents = [
   {
     day: 12,
     phase: 'VALIDATE',
-    title: '두 번째 고객에게 같은 문제를 확인하세요',
+    title: '더 많은 고객에게 의견을 확인해보세요',
     description:
       '한 사람의 강한 의견을 시장 전체로 받아들이지 마세요. 다른 고객에게 같은 패턴이 반복되는지 확인합니다.',
     steps: [
