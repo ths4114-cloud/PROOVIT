@@ -3,10 +3,11 @@
 import http from 'node:http';
 import { readFileSync } from 'node:fs';
 import { PGlite } from '@electric-sql/pglite';
+import { missionContentSql } from '../../scripts/mission-content-sql.mjs';
 const db = new PGlite();
 const uid = 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa';
 const cid = '10000000-0000-4000-8000-000000000001';
-await db.exec(`create role anon; create role authenticated; create schema auth;
+await db.exec(`create role anon; create role authenticated; create role service_role; create schema auth;
 create table auth.users(id uuid primary key, email_confirmed_at timestamptz, is_anonymous boolean default false);
 create function auth.uid() returns uuid language sql stable as $$ select nullif(current_setting('request.jwt.claim.sub',true),'')::uuid $$;
 grant usage on schema auth to anon,authenticated; grant execute on function auth.uid() to anon,authenticated;
@@ -18,6 +19,13 @@ await db.exec(
   ),
 );
 let fault = false;
+for (const name of ['20260921070000_mission_detail.sql', '20260921071000_camera_proof.sql']) {
+  await db.exec(
+    readFileSync(new URL(`../../supabase/migrations/${name}`, import.meta.url), 'utf8'),
+  );
+}
+let storageFault = false;
+const objects = new Map();
 const tokens = new Set();
 function user() {
   return {
@@ -61,6 +69,8 @@ function session() {
 }
 async function reset() {
   fault = false;
+  storageFault = false;
+  objects.clear();
   tokens.clear();
   await db.exec(
     'reset role; truncate public.score_events,public.participations,public.missions,public.challenges cascade',
@@ -89,8 +99,18 @@ const server = http.createServer((req, res) => {
         res.writeHead(302, { Location: `${redirectTo}?code=test-oauth-code` });
         return res.end();
       }
-      let raw = '';
-      for await (const chunk of req) raw += chunk;
+      const parts = [];
+      for await (const chunk of req) parts.push(chunk);
+      const bytes = Buffer.concat(parts);
+      if (path.startsWith('/storage/v1/object/camera-proofs/') && req.method === 'POST') {
+        if (req.headers.authorization !== 'Bearer test-server-secret')
+          return reply(403, { message: 'Denied' });
+        if (storageFault) return reply(503, { message: 'Storage unavailable' });
+        if (objects.has(path)) return reply(409, { message: 'Already exists' });
+        objects.set(path, bytes);
+        return reply(200, { Key: path });
+      }
+      const raw = bytes.toString('utf8');
       let body = {};
       try {
         body = req.headers['content-type']?.includes('application/x-www-form-urlencoded')
@@ -107,6 +127,8 @@ const server = http.createServer((req, res) => {
       if (path === '/__test/control') {
         await db.exec('reset role');
         if (body.fault !== undefined) fault = body.fault;
+        if (body.storageFault !== undefined) storageFault = body.storageFault;
+        if (body.content) await db.exec(missionContentSql(cid));
         if (body.day !== undefined)
           await db.query(
             `update public.challenges set start_date=(now() at time zone 'Asia/Seoul')::date - ($1::integer-1), enrollment_closes_at=least(enrollment_closes_at, (((now() at time zone 'Asia/Seoul')::date - ($1::integer-1) + 31)::timestamp at time zone 'Asia/Seoul'))`,
@@ -131,6 +153,7 @@ const server = http.createServer((req, res) => {
         });
       const token = req.headers.authorization?.replace(/^Bearer /i, '');
       const signedIn = tokens.has(token);
+      const service = token === 'test-server-secret';
       if (path === '/auth/v1/token')
         return body.auth_code === 'invalid'
           ? reply(400, { code: 'bad_oauth_code', msg: 'invalid code' })
@@ -144,17 +167,35 @@ const server = http.createServer((req, res) => {
       if (path.startsWith('/rest/v1/rpc/')) {
         if (fault) return reply(503, { code: 'DB_DOWN', message: 'Test outage' });
         await db.exec(
-          `reset role; select set_config('request.jwt.claim.sub','${signedIn ? uid : ''}',false); set role ${signedIn ? 'authenticated' : 'anon'};`,
+          `reset role; select set_config('request.jwt.claim.sub','${signedIn ? uid : ''}',false); set role ${service ? 'service_role' : signedIn ? 'authenticated' : 'anon'};`,
         );
         try {
           let result;
           const name = path.split('/').at(-1);
-          if (name === 'challenge_overview' || name === 'participant_home')
+          if (
+            name === 'challenge_overview' ||
+            name === 'participant_home' ||
+            name === 'mission_board'
+          )
             result = await db.query(`select public.${name}($1) as data`, [body.p_slug]);
           else if (name === 'join_challenge')
             result = await db.query('select public.join_challenge($1,$2) as data', [
               body.p_challenge_id,
               body.p_rules_version,
+            ]);
+          else if (name === 'mission_detail' || name === 'proof_result')
+            result = await db.query(`select public.${name}($1) as data`, [body.p_mission_id]);
+          else if (name === 'reserve_camera_proof')
+            result = await db.query('select public.reserve_camera_proof($1,$2,$3,$4) as data', [
+              body.p_user_id,
+              body.p_mission_id,
+              body.p_request_key,
+              body.p_image_hash,
+            ]);
+          else if (name === 'accept_camera_proof' || name === 'fail_camera_proof')
+            result = await db.query(`select public.${name}($1,$2) as data`, [
+              body.p_user_id,
+              body.p_attempt_id,
             ]);
           else return reply(404, { message: 'Not found' });
           return reply(200, result.rows[0].data);

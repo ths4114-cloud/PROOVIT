@@ -21,25 +21,35 @@ export default async function MissionPage({ params }: { params: Promise<{ missio
       <p className="text-sm leading-7 text-muted">{m.description}</p>
       {hasDetailContent(m) ? (
         <>
-          {[
-            ['이렇게 실행하세요', m.steps],
-            ['오늘의 제출', m.submissionItems],
-            ['완료 기준', m.completionCriteria],
-          ].map(([title, items]) => (
-            <Card key={title as string}>
+          {(
+            [
+              ['이렇게 실행하세요', m.steps],
+              ['오늘의 제출', m.submissionItems],
+              ['완료 기준', m.completionCriteria],
+            ] as const
+          ).map(([title, items]) => (
+            <Card key={title}>
               <h2 className="font-bold">{title}</h2>
               <ul className="mt-4 list-inside list-disc space-y-3 text-sm leading-7">
-                {(items as readonly string[]).map((item) => (
+                {items.map((item) => (
                   <li key={item}>{item}</li>
                 ))}
               </ul>
             </Card>
           ))}
           <StateNotice title="인증 사진 안내">{m.proofGuide}</StateNotice>
-          <p className="text-sm text-muted">지금 제출하면 {m.availableScore}점 · 서버 시간 기준</p>
-          {m.status === 'available' ? (
+          {m.status === 'available' && (
+            <p className="text-sm text-muted">
+              지금 제출하면 {m.availableScore}점 · 서버 시간 기준
+            </p>
+          )}
+          {m.status === 'available' || m.status === 'processing' ? (
             <ActionLink href={`/missions/${m.id}/camera`} className="w-full">
               카메라로 인증하기
+            </ActionLink>
+          ) : m.status === 'accepted' ? (
+            <ActionLink href={`/missions/${m.id}/result`} className="w-full">
+              인증 결과 보기 · {m.awardedScore}점
             </ActionLink>
           ) : (
             <StateNotice title={missionLabels[m.status]}>

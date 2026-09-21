@@ -1,5 +1,7 @@
 # Mission → Proof → Score 연결 준비 (2026-09-21)
 
+> 아래는 구현 전 조사 기록이다. 이후 PO 승인에 따라 추가 구현했으며 최신 상태는 [구현 인계](MISSION_PROOF_IMPLEMENTATION.md)와 [승인 설계](../decisions/2026-09-21-mission-proof-integration-proposed.md)를 참조한다.
+
 상태: 조사·계약 제안. 승인된 DB 설계나 실제 연동 완료가 아니다. 앱/공통 UI/DB 변경 없이 조사했다.
 기준: main `44ee708`, 우리 앱 `e962dcd` 및 회귀 `3df54c8`, 팀원 #6 `d48b87c`, #7 `bd030cf`. 원격 추가 push 없음.
 

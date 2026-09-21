@@ -1,31 +1,44 @@
-import { redirect } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import { AppShell } from '@/components/app-shell';
 import { ActionLink, StateNotice } from '@/components/ui';
+import { CameraCapture } from '@/components/camera-capture';
 import { getSupabaseConfig } from '@/lib/env';
 import { getContext } from '@/lib/data';
-
-/**
- * 실제(UUID) 미션의 카메라 인증 화면.
- * 촬영·미리보기·재촬영 UI는 다른 개발자가 preview 경로에 구현한 컴포넌트를
- * 이 real 라우트로 옮겨 붙이는 작업이 후속 통합 과제로 남아 있습니다.
- * 지금은 "준비 중" 안내만 제공하며, 완료되지 않은 진입점을 완료로 표시하지 않습니다.
- */
+import { getMission, hasDetailContent } from '@/lib/missions/queries';
+import { proofStorageConfigured } from '@/lib/proofs/server';
 export const dynamic = 'force-dynamic';
-
-export default async function RealMissionCamera() {
+export default async function RealMissionCamera({
+  params,
+}: {
+  params: Promise<{ missionId: string }>;
+}) {
   if (!getSupabaseConfig()) redirect('/');
-  const { user } = await getContext();
-  if (!user) redirect('/login');
-
+  if (!(await getContext()).user) redirect('/login');
+  const m = await getMission((await params).missionId);
+  if (!m) notFound();
+  if (m.status === 'accepted') redirect(`/missions/${m.id}/result`);
   return (
-    <AppShell nav={false} authenticated>
-      <StateNotice title="카메라 인증 연결 준비 중">
-        오늘의 미션 촬영·미리보기·재촬영 화면은 곧 이 화면에 연결됩니다. 화면 구성은{' '}
-        <code className="text-accent">/preview/missions/[missionId]/camera</code> 에서 먼저 확인하실
-        수 있어요.
-      </StateNotice>
-      <ActionLink href="/home" className="w-full !bg-panel">
-        홈으로 돌아가기
+    <AppShell authenticated>
+      <h1 className="font-display text-2xl font-bold">
+        DAY {m.day} · {m.title}
+      </h1>
+      {(m.status === 'available' || m.status === 'processing') &&
+      hasDetailContent(m) &&
+      proofStorageConfigured() ? (
+        <>
+          <StateNotice title="촬영 전 확인">
+            {m.proofGuide} 사진은 비공개로 저장되며 제출 마감 30일 후 삭제됩니다. P0는 사진 내용의
+            수행 진위가 아닌 파일·권한 등 기술 조건을 확인합니다.
+          </StateNotice>
+          <CameraCapture missionId={m.id} />
+        </>
+      ) : (
+        <StateNotice title="지금은 촬영할 수 없어요">
+          제출 기간 또는 사진 저장 연결 상태를 확인해 주세요.
+        </StateNotice>
+      )}
+      <ActionLink href={`/missions/${m.id}`} className="w-full !bg-panel">
+        미션 상세로 돌아가기
       </ActionLink>
     </AppShell>
   );
