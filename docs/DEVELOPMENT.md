@@ -39,7 +39,7 @@ E2E는 빌드한 앱을 3000 포트로 직접 실행한다. 검사 전에 다른
 - B: `src/app/preview/missions/[missionId]`. 첫 작업은 미션 상세와 실제 카메라 촬영/재촬영을 연결한다. 사진 제출과 Score는 승인된 서버/DB 계약 뒤 별도 PR로 연결한다.
 - 공통: `src/components`, `src/lib/contracts.ts`, `src/lib/routes.ts`, `src/lib/supabase`, `src/proxy.ts`, 루트 설정·lockfile. 변경 전에 상대 담당자에게 수정 범위와 계약 변경을 알린다.
 - 실제 데이터 화면을 만들 때 `/preview` fixture를 보호 경로에서 import하지 않는다. UI가 필요하면 기능 컴포넌트로 분리해 서버 조회 결과를 props로 전달한다.
-- 각자 작업별 브랜치를 만들고 상대방을 Reviewer로 지정한다. 실제 이름 배정은 PO가 팀원과 정한다. main으로 직접 기능 코드를 push하지 않는다.
+- 각자 작업별 브랜치를 만들고 독립 Reviewer(별도 AI 또는 사람)를 지정한다. 팀원 GitHub Approve는 선택 사항이며 [프로젝트 전체 병합 기준](decisions/2026-09-21-project-merge-policy.md)의 CI·PO 승인 요건을 따른다. main으로 직접 기능 코드를 push하지 않는다.
 
 추천 첫 브랜치: A `codex/challenge-entry`, B `codex/mission-camera`. 동시 DB migration 변경은 담당자를 한 명 정한 뒤 진행한다. 공통 기반은 미션/점수 정책을 계산하지 않는다.
 
