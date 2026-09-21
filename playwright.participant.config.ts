@@ -31,6 +31,7 @@ export default defineConfig({
         APP_ORIGIN: 'http://localhost:3000',
         PROOVIT_CHALLENGE_SLUG: 'launch-31',
         PROOVIT_LOCAL_PREVIEW: 'true',
+        ENABLE_DEMO: 'false',
         SUPABASE_SECRET_KEY: 'test-server-secret',
       },
       reuseExistingServer: false,

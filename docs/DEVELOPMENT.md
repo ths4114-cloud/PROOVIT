@@ -1,5 +1,12 @@
 # 개발 시작 안내
 
+## 발표용 인터랙티브 데모
+
+Supabase 없이 시연하려면 [데모 실행 안내](implementation/INTERACTIVE_DEMO.md)를 따른다.
+`ENABLE_DEMO=true`로 서버를 실행하고 `/demo`를 연다. `/preview` 테스트 로그인이나
+실제 `/home` 경로와 다르며, 실제 서비스의 인증 검사를 해제하지 않는다.
+기존 `/preview` 공개 금지 원칙과 별개로 `/demo`만 명시적 시연 범위다.
+
 ## 처음 실행하기
 
 1. 초대를 수락하고 저장소를 각자 컴퓨터에 clone한다.

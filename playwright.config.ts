@@ -19,6 +19,7 @@ export default defineConfig({
     timeout: 60000,
     env: {
       ENABLE_UI_PREVIEW: 'true',
+      ENABLE_DEMO: 'true',
       APP_ORIGIN: 'http://localhost:3000',
       NEXT_PUBLIC_SUPABASE_URL: '',
       NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: '',
