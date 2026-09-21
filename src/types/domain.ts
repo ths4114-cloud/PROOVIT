@@ -47,6 +47,7 @@ export type Database = {
     Tables: { [K in never]: never };
     Views: { [K in never]: never };
     Functions: {
+      proof_result: { Args: { p_mission_id: string }; Returns: Json };
       mission_detail: { Args: { p_mission_id: string }; Returns: Json };
       mission_board: { Args: { p_slug: string }; Returns: Json };
       challenge_overview: { Args: { p_slug: string }; Returns: Json };
