@@ -6,6 +6,11 @@ export async function proxy(request: NextRequest) {
   const settings = getSupabaseConfig();
   if (!settings) return response;
   const supabase = createServerClient(settings.url, settings.key, {
+    cookieOptions: {
+      httpOnly: true,
+      sameSite: 'lax',
+      secure: process.env.NODE_ENV === 'production',
+    },
     global: {
       fetch: (input, init) => fetch(input, { ...init, signal: AbortSignal.timeout(10_000) }),
     },

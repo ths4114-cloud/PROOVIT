@@ -28,9 +28,9 @@
 
 ## 검증과 남은 Gate
 
-- 로컬 `npm run check`, `npm run build`, preview E2E15개, participant/proof E2E13개 실행. 마지막 결과는 PR/최종 보고에서 확인한다.
+- 로컬 `npm run check`, `npm run build`, preview E2E15개, participant/proof E2E14개 실행. 직접 미션 방문 시 만료 세션 갱신과 HttpOnly/Secure/SameSite=Lax 유지 회귀를 포함한다. 마지막 결과는 PR/최종 보고에서 확인한다.
 - PGlite 통합 테스트: 권한·미래 미션 차단·KST점수·순차 재시도·Storage policy SQL·만료 정리. sharp 테스트: JPEG 디코딩/크기/실제 EXIF 제거. 서비스 테스트: 저장 실패·commit 응답 유실.
 - E2E는 실제 Next 라우트+PGlite SQL을 사용하지만 OAuth/Storage/getUserMedia는 테스트 대역이다. 실제 Supabase 연동/기기 검증으로 표시하지 않는다.
-- 진짜 동시성은 `npm run test:concurrency`의20개 독립 PostgreSQL 세션이 검증한다. 로컬 PostgreSQL/Docker가 없어 로컬 실행은 미실행; CI에는 disposable PostgreSQL17 서비스를 추가했다. 최신 CI 성공 확인 전 완료로 표시하지 않는다.
+- 진짜 동시성은 `npm run test:concurrency`의20개 독립 PostgreSQL 세션이 검증한다. 로컬 PostgreSQL/Docker가 없어 로컬 실행은 미실행. CI의 disposable PostgreSQL17에서 `15f5814`의 동시성·전체 검증이 [통과](https://github.com/ths4114-cloud/PROOVIT/actions/runs/35569711176/job/106238573540)했다. 후속 변경은 최신 CI 성공을 별도 확인한다.
 - 독립 리뷰·팀원 사람 승인·실제 Supabase migration/Storage/OAuth·HTTPS 실제 기기·삭제 스케줄/복구 검증은 남은 Gate다. 자체 점검은 독립 리뷰를 대체하지 않는다.
 - 기존 미추적 Discord/팀원 피드백 문서는 이번 변경에 포함하지 않는다. 작업 중 원격 main=`f316014`, 선행 브랜치=`057bf4a` 기준으로 추가 변경 없음 확인.

@@ -3,7 +3,7 @@
 ## 2026-09-21 실제 라우트 연결
 
 - `codex/mission-proof`에서 UUID 상세→공용 카메라→사진 제출→accepted/누적 점수→보드·홈을 연결했다. 실제 경로만 제출을 활성화하며 `/preview/**`는 비활성이다.
-- check/build 통과, 단위·PGlite 통합17개, preview E2E15개, participant/proof E2E13개 통과. Enter 제출 및390px 화면 스크린샷 자체 확인. 기존360/390/430px 카메라 회귀 유지.
+- check/build 통과, 단위·PGlite 통합17개, preview E2E15개, participant/proof E2E14개 통과. Enter 제출 및390px 화면 스크린샷 자체 확인. 기존360/390/430px 카메라 회귀 유지. 미션 직접 방문의 만료 세션 갱신·보안 쿠키 유지도 확인.
 - 인증·Storage·카메라는 E2E 대역이다. Galaxy/iPhone 실제 기기와 실제 Supabase 검증은 미실행. [상세 인계](MISSION_PROOF_IMPLEMENTATION.md) 참조.
 
 ## 자동 검증 범위

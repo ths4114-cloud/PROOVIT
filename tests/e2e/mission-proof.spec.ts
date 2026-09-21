@@ -95,3 +95,41 @@ test('proof endpoint rejects unauthenticated, cross-origin and invalid input', a
   );
   expect(status).toBe(400);
 });
+
+test('direct mission visit refreshes an expired session without weakening cookie attributes', async ({
+  page,
+}) => {
+  await login(page);
+  await page.getByRole('link', { name: '미션 상세 보기' }).click();
+  await expect(page).toHaveURL(/\/missions\/[0-9a-f-]{36}$/);
+  const detailUrl = page.url();
+  const authCookies = (await page.context().cookies()).filter((cookie) =>
+    /-auth-token$/.test(cookie.name),
+  );
+  expect(authCookies).toHaveLength(1); // Small, deterministic test session fits in one cookie.
+  const cookie = authCookies[0];
+  const session = JSON.parse(
+    Buffer.from(cookie.value.slice('base64-'.length), 'base64url').toString(),
+  );
+  session.expires_at = 1;
+  const parts = session.access_token.split('.');
+  const claims = JSON.parse(Buffer.from(parts[1], 'base64url').toString());
+  claims.exp = 1;
+  parts[1] = Buffer.from(JSON.stringify(claims)).toString('base64url');
+  session.access_token = parts.join('.');
+  await page
+    .context()
+    .addCookies([
+      { ...cookie, value: `base64-${Buffer.from(JSON.stringify(session)).toString('base64url')}` },
+    ]);
+  await page.goto(detailUrl);
+  await expect(page.getByRole('heading', { name: '오늘의 제출' })).toBeVisible();
+  const refreshed = (await page.context().cookies()).find((item) => item.name === cookie.name)!;
+  const data = JSON.parse(
+    Buffer.from(refreshed.value.slice('base64-'.length), 'base64url').toString(),
+  );
+  expect(data.expires_at).toBeGreaterThan(Date.now() / 1000);
+  expect(refreshed.httpOnly).toBe(true);
+  expect(refreshed.secure).toBe(true);
+  expect(refreshed.sameSite).toBe('Lax');
+});
