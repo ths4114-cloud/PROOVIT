@@ -174,9 +174,8 @@ test('navigation occupies its own bottom row at every content scroll position', 
     const nav = page.getByRole('navigation', { name: '주요 메뉴' });
     const initial = await nav.boundingBox();
     expect(initial).not.toBeNull();
-    expect(Math.abs(initial!.y + initial!.height - (width >= 900 ? 803 : 844))).toBeLessThanOrEqual(
-      1,
-    );
+    const viewportHeight = page.viewportSize()!.height;
+    expect(Math.abs(initial!.y + initial!.height - viewportHeight)).toBeLessThanOrEqual(1);
     for (const fraction of [0, 0.5, 1]) {
       await page.locator('#main').evaluate((main, fraction) => {
         main.scrollTop = (main.scrollHeight - main.clientHeight) * fraction;
@@ -198,7 +197,7 @@ test('navigation occupies its own bottom row at every content scroll position', 
   const finalGeometry = await page.evaluate(() => ({
     y: window.scrollY,
     viewport: window.innerHeight,
-    navBottom: document.querySelector('.bottom-nav')!.getBoundingClientRect().bottom,
+    navBottom: document.querySelector('[aria-label="주요 메뉴"]')!.getBoundingClientRect().bottom,
     visualTop: window.visualViewport?.offsetTop,
     visualHeight: window.visualViewport?.height,
     mainHeight: document.querySelector('#main')!.getBoundingClientRect().height,
@@ -216,4 +215,22 @@ test('navigation occupies its own bottom row at every content scroll position', 
     fullPage: false,
     scale: 'css',
   });
+});
+
+test('login page hides the preview shortcut when UI preview is not enabled', async ({ page }) => {
+  // 이 설정(playwright.participant.config.ts)은 ENABLE_UI_PREVIEW를 켜지 않는다.
+  // 꺼진 환경에서 '로그인 없이 화면 예시 보기' 링크가 보이면 클릭 시 404로 안내하게 되므로 숨겨야 한다.
+  await page.goto('/login');
+  await expect(page.getByRole('link', { name: '로그인 없이 화면 예시 보기' })).toHaveCount(0);
+});
+
+test('logged-in nav shows 마이페이지 and navigates to the account page', async ({ page }) => {
+  await login(page);
+  const account = page.getByRole('link', { name: /마이페이지/ });
+  await expect(account).toBeVisible();
+  await expect(page.getByRole('link', { name: /^로그인$/ })).toHaveCount(0);
+  await account.click();
+  await expect(page).toHaveURL(/\/mypage$/);
+  await expect(page.getByRole('heading', { name: '마이페이지' })).toBeVisible();
+  await expect(page.getByText('participant@example.test', { exact: false })).toBeVisible();
 });

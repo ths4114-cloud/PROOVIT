@@ -52,9 +52,11 @@ export default async function LoginPage({
         기본 프로필과 이메일은 계정 인증에만 사용됩니다.
       </p>
       <InstallButton />
-      <ActionLink href="/preview/home" className="w-full !bg-panel">
-        로그인 없이 화면 예시 보기
-      </ActionLink>
+      {process.env.ENABLE_UI_PREVIEW === 'true' && (
+        <ActionLink href="/preview/home" className="w-full !bg-panel">
+          로그인 없이 화면 예시 보기
+        </ActionLink>
+      )}
     </AppShell>
   );
 }

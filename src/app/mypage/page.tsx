@@ -19,7 +19,7 @@ export default async function MyPage() {
     redirect('/login?error=session');
   }
   return (
-    <AppShell>
+    <AppShell authenticated>
       <h1 className="text-3xl font-black">마이페이지</h1>
       <Card>
         <p className="text-xs text-muted">로그인 계정</p>

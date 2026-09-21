@@ -84,7 +84,7 @@ export function AppShell({
   const home = preview ? '/preview/home' : '/home';
   const board = preview ? '/preview/board' : '/board';
   const challenge = preview ? '/preview/challenge' : '/';
-  const account = authenticated ? (preview ? '/mypage' : '/home') : '/login';
+  const account = authenticated ? '/mypage' : '/login';
   const cameraHref = preview ? `/preview/missions/${previewTodayMission.id}/camera` : '/camera';
 
   const items = [
