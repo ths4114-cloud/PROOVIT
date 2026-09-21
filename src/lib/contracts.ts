@@ -26,6 +26,7 @@ export interface ScoreResult {
   awardedScore: number;
   totalScore: number;
   verificationMode: 'capture_auto_accept';
+  policyVersion: string;
 }
 export type ApiResult<T> =
   | { ok: true; data: T }
@@ -33,8 +34,20 @@ export type ApiResult<T> =
       ok: false;
       error: {
         code:
-          'UNAUTHENTICATED' | 'FORBIDDEN' | 'NOT_FOUND' | 'NOT_READY' | 'CONFLICT' | 'UNAVAILABLE';
-        message: string;
+          | 'UNAUTHENTICATED'
+          | 'FORBIDDEN'
+          | 'NOT_FOUND'
+          | 'NOT_READY'
+          | 'CONFLICT'
+          | 'UNAVAILABLE'
+          | 'INVALID_INPUT'
+          | 'INVALID_IMAGE'
+          | 'IMAGE_TOO_LARGE'
+          | 'KEY_CONFLICT'
+          | 'PROCESSING'
+          | 'RETRY_REQUIRED'
+          | 'RATE_LIMIT';
+        message?: string;
       };
     };
 export const missionLabels: Record<MissionStatus, string> = {

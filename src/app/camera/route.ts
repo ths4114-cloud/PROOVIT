@@ -5,8 +5,7 @@ import { getContext, getHome } from '@/lib/data';
 /**
  * 하단 네비 중앙 카메라 버튼의 실제 진입점.
  * 오늘의 실제 미션을 조회해 해당 미션의 카메라 화면으로 안내합니다.
- * 카메라 촬영 자체는 아직 실제 라우트에 통합되지 않아 안내 화면으로 연결합니다.
- * (담당: 다른 개발자의 mission-camera 작업과 후속 통합 예정)
+ * 실제 카메라 라우트에서 미션 소유권·상태·저장소 설정을 다시 확인합니다.
  */
 export const dynamic = 'force-dynamic';
 
