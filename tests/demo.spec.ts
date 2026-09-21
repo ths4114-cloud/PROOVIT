@@ -103,3 +103,28 @@ test('demo validates stored data and fits narrow screens with keyboard entry', a
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await expect(page.getByRole('navigation', { name: '데모 하단 메뉴' })).toBeVisible();
 });
+
+test('journey board has accessible chapters, current mission and locked stops', async ({
+  page,
+}, testInfo) => {
+  await start(page);
+  await page.getByRole('link', { name: '미션보드', exact: true }).click();
+  await expect(page.getByRole('region', { name: /단계$/ })).toHaveCount(6);
+  await expect(page.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '11');
+  const current = page.getByRole('link', { name: 'Day 12 · 오늘', exact: true });
+  await expect(current).toHaveAttribute('aria-current', 'step');
+  await expect(page.getByRole('link', { name: /Day 13/ })).toHaveCount(0);
+  for (const width of [320, 390, 430]) {
+    await page.setViewportSize({ width, height: 844 });
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
+      true,
+    );
+    const box = await current.boundingBox();
+    expect(box!.width).toBeGreaterThanOrEqual(44);
+    expect(box!.height).toBeGreaterThanOrEqual(44);
+    await page.screenshot({ path: testInfo.outputPath(`journey-${width}.png`), fullPage: true });
+  }
+  await current.focus();
+  await current.press('Enter');
+  await expect(page).toHaveURL(/\/demo\/missions\/day-12$/);
+});

@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { CameraCapture } from '@/components/camera-capture';
+import { MissionJourney } from './mission-journey';
 import { ActionLink, Badge, Button, Card, MonoStat, StateNotice } from '@/components/ui';
 import { missionContents } from '@/lib/missions/content';
 import { DEMO_DAY, demoTotal } from '@/lib/demo/state';
@@ -110,40 +111,7 @@ export function DemoApp({ route }: { route: string }) {
                 </ActionLink>
               </>
             ) : route === 'board' ? (
-              <>
-                <h1 className="text-2xl font-bold">31일 미션보드</h1>
-                <p>
-                  데모 누적 점수 <strong data-testid="demo-total">{total.toLocaleString()}</strong>
-                  점
-                </p>
-                <p className="text-sm leading-7 text-muted">
-                  Day 1–11은 완료 샘플, Day 12는 촬영 체험, Day 13–31은 잠금 상태입니다.
-                </p>
-                <div className="grid grid-cols-3 gap-3">
-                  {missionContents.map((item) => {
-                    const done =
-                      item.day < DEMO_DAY || (item.day === DEMO_DAY && state.completedToday);
-                    const label = `Day ${item.day} · ${done ? '완료' : item.day > DEMO_DAY ? '잠김' : '오늘'}`;
-                    return item.day > DEMO_DAY ? (
-                      <div
-                        key={item.day}
-                        className="rounded-xl border border-line p-3 text-center text-sm text-muted"
-                        aria-label={label}
-                      >
-                        {label}
-                      </div>
-                    ) : (
-                      <Link
-                        key={item.day}
-                        href={`/demo/missions/day-${item.day}`}
-                        className="flex min-h-16 items-center justify-center rounded-xl border border-accent/40 bg-panel p-3 text-center text-sm font-bold"
-                      >
-                        {label}
-                      </Link>
-                    );
-                  })}
-                </div>
-              </>
+              <MissionJourney completedToday={state.completedToday} total={total} />
             ) : route === 'challenge' ? (
               <>
                 <h1 className="text-2xl font-bold">31일 MVP 런칭 챌린지</h1>

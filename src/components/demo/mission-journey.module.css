@@ -1,0 +1,330 @@
+.journey {
+  --pink: #ff4b91;
+}
+.heading {
+  padding: 0 2px 22px;
+}
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: var(--pink);
+}
+.heading h1 {
+  margin-top: 8px;
+  font-size: 29px;
+  font-weight: 800;
+  letter-spacing: -0.05em;
+}
+.heading h1 > span {
+  display: block;
+  margin-top: 6px;
+  color: #b5a8ae;
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+}
+.stats {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-top: 22px;
+  color: #b5a8ae;
+  font-size: 12px;
+}
+.stats strong {
+  color: #fff2f7;
+  font-family: var(--font-mono);
+  font-size: 22px;
+}
+.progress {
+  height: 4px;
+  margin-top: 10px;
+  border-radius: 4px;
+  background: #34232c;
+  overflow: hidden;
+}
+.progress > span {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, #a92355, #ff6ba5);
+  box-shadow: 0 0 12px #ff2e7e;
+}
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 12px;
+  font-size: 10px;
+  color: #b5a8ae;
+}
+.pink {
+  color: var(--pink);
+}
+.today {
+  display: flex;
+  gap: 14px;
+  padding: 19px 16px;
+  border: 1px solid #963150;
+  border-radius: 20px;
+  background: radial-gradient(ellipse at top left, #5d1934 0%, #26101b 62%);
+  box-shadow: 0 8px 40px -22px #ff2e7e;
+}
+.today > div:last-child {
+  flex: 1;
+  min-width: 0;
+}
+.todayIcon {
+  display: flex;
+  flex: 0 0 40px;
+  width: 40px;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #ff6499;
+  border-radius: 50%;
+  color: white;
+  background: #ff2e7e;
+  font-size: 26px;
+  box-shadow: 0 0 22px #ff2e7e55;
+}
+.today h2 {
+  margin-top: 7px;
+  font-size: 16px;
+  line-height: 1.6;
+  font-weight: 700;
+  word-break: keep-all;
+}
+.todayLink {
+  display: flex;
+  min-height: 44px;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+  color: #ff80b0;
+  font-size: 12px;
+  font-weight: 700;
+}
+.map {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  margin: 24px -10px 0;
+  padding: 0 10px;
+  border-radius: 22px;
+  background:
+    radial-gradient(ellipse at 15% 38%, #641b3b24, transparent 40%),
+    radial-gradient(ellipse at 100% 85%, #46346525, transparent 40%), #100c10;
+}
+.skyline {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  gap: 5px;
+  opacity: 0.35;
+  background-image: radial-gradient(#76526450 0.7px, transparent 0.7px);
+  background-size: 18px 18px;
+}
+.skyline i {
+  flex: 1;
+  border: 1px solid #693146;
+  background:
+    repeating-linear-gradient(0deg, transparent 0 8px, #ba497f45 8px 10px),
+    linear-gradient(#361528, #120e14);
+}
+.chapter {
+  position: relative;
+  padding: 20px 4px 8px;
+  border-bottom: 1px solid #ffffff08;
+}
+.chapterHeading {
+  display: flex;
+  gap: 11px;
+  align-items: flex-start;
+}
+.chapterNumber {
+  display: flex;
+  flex-shrink: 0;
+  width: 29px;
+  height: 29px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #503343;
+  border-radius: 9px;
+  color: #b9a1ad;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  background: #241720;
+}
+.chapter .eyebrow {
+  color: #b2a0ac;
+  font-size: 9px;
+  letter-spacing: 0.09em;
+}
+.chapter .eyebrow > span {
+  margin-left: 7px;
+  color: #988792;
+}
+.chapter h2 {
+  margin-top: 4px;
+  font-size: 15px;
+  font-weight: 700;
+}
+.caption {
+  margin-top: 4px;
+  font-size: 11px;
+  color: #ac9ca5;
+}
+.active {
+  background: radial-gradient(ellipse at center, #8a224b25, transparent 70%);
+}
+.active .chapterNumber {
+  color: #ff85b2;
+  border-color: #b8396c;
+  box-shadow: 0 0 14px #ff2e7e20;
+}
+.active .eyebrow {
+  color: #ff80b0;
+}
+.here {
+  margin-left: auto;
+  flex-shrink: 0;
+  padding: 5px 7px;
+  border-radius: 6px;
+  color: #ff90b9;
+  background: #ff2e7e18;
+  font-size: 9px;
+}
+.track {
+  position: relative;
+  margin-top: 8px;
+  padding: 0;
+  list-style: none;
+}
+.trackArt {
+  position: absolute;
+  inset: 0;
+  transform: translateY(-10px);
+  pointer-events: none;
+}
+.trackArt svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.stop {
+  position: absolute;
+  width: 44px;
+  transform: translate(-50%, -50%);
+}
+.node {
+  display: flex;
+  position: relative;
+  min-height: 60px;
+  width: 44px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border-radius: 12px;
+}
+.orb {
+  display: flex;
+  width: 32px;
+  height: 32px;
+  border: 1px solid #65505d;
+  border-radius: 50%;
+  align-items: center;
+  justify-content: center;
+  background: #211922;
+  color: #bbadb7;
+  font-size: 11px;
+  font-family: var(--font-mono);
+}
+.day {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.025em;
+  color: #b9a7b3;
+}
+.done .orb {
+  background: #60213c;
+  border-color: #d64077;
+  color: #ffa4c7;
+  box-shadow: 0 0 10px #ff2e7e15;
+}
+.done .day {
+  color: #e0afc2;
+}
+.current .orb {
+  width: 38px;
+  height: 38px;
+  background: #ff2e7e;
+  color: white;
+  border: 3px solid #ffb5d1;
+  outline: 4px solid #ff2e7e20;
+  box-shadow: 0 0 26px #ff2e7e70;
+  font-weight: 700;
+}
+.current .day {
+  color: #ff8db8;
+  font-size: 9px;
+  font-weight: 700;
+}
+.node:hover .orb {
+  border-color: #ff9ec4;
+}
+.lock {
+  position: absolute;
+  right: 2px;
+  top: 5px;
+  color: #bc9eaf;
+  background: #211922;
+  border-radius: 2px;
+}
+.finish {
+  padding: 32px 12px 40px;
+  text-align: center;
+}
+.finish > span:first-child {
+  display: block;
+  color: #ffbc6e;
+  font-size: 35px;
+  text-shadow: 0 0 28px #ff2e7eaa;
+}
+.finish p {
+  margin: 10px 0 14px;
+  color: #b5a1af;
+  font-size: 12px;
+  line-height: 1.9;
+}
+.finish strong {
+  color: #f2dbe7;
+  font-size: 14px;
+}
+.finish .eyebrow {
+  color: #ccab82;
+  font-size: 8px;
+}
+.note {
+  padding: 16px 4px 0;
+  color: #a99c97;
+  font-size: 11px;
+  line-height: 1.8;
+}
+@media (min-width: 400px) {
+  .chapter {
+    padding-inline: 12px;
+  }
+  .orb {
+    width: 36px;
+    height: 36px;
+  }
+  .today h2 {
+    font-size: 18px;
+  }
+}
